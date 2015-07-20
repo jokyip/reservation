@@ -1,0 +1,23 @@
+<ion-view>
+	<ion-header-bar class="item-input-inset" align-title="left">
+	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        <h1 class='title'>Resource</h1>
+        <button class="button button-clear button-positive" ng-controller="ResourceCtrl" ng-click="controller.input()">New</button>
+	</ion-header-bar>
+	<ion-content>
+		<ion-list>
+			<ion-item ng-controller="ResourceCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+				<div class='row'>
+					<div class='col'>
+						{{model.name}}
+					</div>
+				</div>
+				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); controller.edit();">Edit</ion-option-button>
+				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); $parent.controller.remove(model);">Delete</ion-option-button>
+			</ion-item>
+		</ion-list>
+		<ion-infinite-scroll ng-if="model.state.page < model.state.total_page" on-infinite="controller.loadMore()">
+		</ion-infinite-scroll>	
+	</ion-content>
+</ion-view>

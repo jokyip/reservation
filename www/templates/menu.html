@@ -9,11 +9,14 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item nav-clear menu-close href="#/file/file/">
-          File
+        <ion-item nav-clear menu-close href="#/file/resource">
+          Resource
         </ion-item>
-        <ion-item nav-clear menu-close href="#/file/permission">
-          Permission
+        <ion-item nav-clear menu-close href="#/file/reservation">
+          Reservation
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/file/myreservation">
+          My Reservation
         </ion-item>
         <ion-item nav-clear menu-close ng-if="env.isNative()" ng-click="navigator.app.exitApp()">
           Exit

@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar>
+  	<button class="button button-clear button-positive" ng-click="controller.ok()">OK</button>
+    <h1 class="title">Select</h1>
+    <button class="button button-clear" ng-click="controller.cancel()">Cancel</button>
+  </ion-header-bar>
+  <ion-content padding="true">
+  	<label class="item item-input">
+	  <span class="input-label">Resource</span>
+	  	<select ng-model="model.resource" ng-options="item._id as item.name for item in resourceList.models" ng-change="controller.getAvailableTimeslot()"><option value="">-- Please select --</option></select>
+	</label>
+	<label class="item item-input">
+	  <span class="input-label">Date</span>
+		<ionic-datepicker idate="currentDate" disablepreviousdates="true"  callback="datePickerCallback">
+		    <button class="button button-block button-positive"> {{ currentDate | date:'dd - MMMM - yyyy' }} </button>
+		</ionic-datepicker>
+	</label>
+	<label class="item item-input">
+	  <span class="input-label">Timeslot</span>
+	  	<ion-list>
+	  	<ion-radio ng-repeat="item in timeslot" ng-value="item.value" ng-model="model.time" name="timeslot" ng-disabled="item.disabled">{{ item.value }} <b>{{ item.reservedBy }}</b></ion-radio>
+	  	</ion-list>
+	</label>    
+	<label class="item item-input">
+	  <span class="input-label">Purpose</span>
+	  <input type="text" ng-model="model.purpose">
+	</label>
+  </ion-content>
+</ion-modal-view>

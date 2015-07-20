@@ -4,7 +4,7 @@ app =
 	url:	"http://localhost:3000/#{proj}"
 	
 oauth2 =
-	url:	'https://mob.myvnc.com'
+	url:	'https://mppsrc.ogcio.hksarg'
 	
 env =
 	proj:		proj
@@ -46,7 +46,7 @@ env =
 		url:	'https://mppsrc.ogcio.hksarg/im/api/roster/<%= obj.owner %>'
 		
 	promise:
-		timeout:	5000	# ms
+		timeout:	50000	# ms
 	
 env.log4js.configure
 	appenders:	[ type: 'console' ]

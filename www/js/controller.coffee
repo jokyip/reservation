@@ -189,12 +189,215 @@ AclCtrl = ($rootScope, $scope, model) ->
 	
 	$scope.collection = new model.Acl()
 	$scope.collection.$fetch()
-	$scope.controller = new AclView collection: $scope.collection 
+	$scope.controller = new AclView collection: $scope.collection
+
+ResourceCtrl = ($rootScope, $scope, $ionicModal, model) ->
+	class ResourceView		
+		constructor: (opts = {}) ->
+			@model = opts.model
+			
+			_.each @modelEvents, (handler, event) =>
+				$scope.$on event, @[handler]
+			
+		input: ->
+			$ionicModal.fromTemplateUrl('templates/resource/select.html', scope: $scope).then (modal) =>
+				$scope.model = new model.Resource				
+				$scope.modal = modal
+				$scope.modal.show()
+				
+		edit: ->
+			$ionicModal.fromTemplateUrl('templates/resource/select.html', scope: $scope).then (modal) =>
+				$scope.modal = modal
+				$scope.modal.show()		
+				
+		ok: ->
+			$scope.model.$save({name: $scope.model.name});
+			$scope.$parent.collection.$fetch();
+			$scope.modal.hide();
+						
+		cancel: ->
+			_.extend @model, @model.previousAttributes
+			$scope.modal.hide();
+																													
+	$scope.controller = new ResourceView model: $scope.model
 	
+ResourceListCtrl = ($rootScope, $scope, model) ->
+	class ResourceListView
+		constructor: (opts = {}) ->
+			_.each @events, (handler, event) =>
+				$scope.$on event, @[handler]
+			
+			@collection = opts.collection
+				
+		loadMore: ->
+			@collection.$fetch()
+				.then ->
+					$scope.$broadcast('scroll.infiniteScrollComplete')
+				.catch alert
+				
+		remove: (perm) ->
+			@collection.remove perm
+	
+	$scope.collection = new model.ResourceList()
+	$scope.collection.$fetch()
+	$scope.controller = new ResourceListView collection: $scope.collection
+	
+	
+ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model) ->
+	class ReservationView		
+		constructor: (opts = {}) ->
+			@model = opts.model
+			
+			_.each @modelEvents, (handler, event) =>
+				$scope.$on event, @[handler]
+				
+			$scope.$on 'modal.removed', ->					    		
+	    		$scope.$parent.controller.collection.$fetch()
+	    		$scope.$parent.model?.$fetch()	
+			
+			$scope.resourceList = new model.ResourceList()
+			$scope.resourceList.$fetch()
+			
+			$scope.timeslot = [
+				{ value:'09:00 - 11:00' },
+			    { value:'11:00 - 13:00' },
+			    { value:'13:00 - 14:00' },
+			    { value:'14:00 - 16:00' },
+			    { value:'16:00 - 18:00' }
+			];
+
+		getAvailableTimeslot: ->
+			$scope.model.time = ''
+			reservationList = new model.ReservationList()
+			reservationList.$fetch({params: {date: $scope.model.date, resource: $scope.model.resource}}).then ->
+				$scope.$apply ->
+					_.each $scope.timeslot, (obj) =>
+						@reservation = _.findWhere reservationList.models, {time: "#{obj.value}"}
+						if @reservation
+							obj.disabled = true
+							obj.reservedBy = '[ Reserved by ' + @reservation.createdBy.username + ' ]'
+						else
+							obj.disabled = false
+							obj.reservedBy = ''
+					
+		input: ->
+			$ionicModal.fromTemplateUrl('templates/reservation/select.html', scope: $scope).then (modal) =>
+				$scope.model = new model.Reservation
+				$scope.model.date = $scope.currentDate	
+				$scope.model.resource = ''				
+				$scope.modal = modal
+				$scope.modal.show()
+				
+		edit: (resource, date, time) ->
+			$ionicModal.fromTemplateUrl('templates/reservation/select.html', scope: $scope).then (modal) =>
+				$scope.model = new model.Reservation
+				$scope.model.resource = resource
+				$scope.model.date = date				
+				$scope.modal = modal
+				$scope.modal.show()
+				@getAvailableTimeslot().then =>
+					$scope.model.time = time			
+				
+		ok: ->
+			$scope.model.$save();
+			$scope.modal.remove();
+						
+		cancel: ->
+			_.extend @model, @model?.previousAttributes
+			$scope.modal.remove();
+																													
+	$scope.controller = new ReservationView model: $scope.model
+	
+	$scope.datePickerCallback = (val) ->
+	  $scope.model.date = val
+	  $scope.controller.getAvailableTimeslot()
+	  return
+	
+MyReservationListCtrl = ($rootScope, $scope, model) ->
+	class MyReservationListView
+		constructor: (opts = {}) ->
+			_.each @events, (handler, event) =>
+				$scope.$on event, @[handler]
+			
+			@collection = opts.collection
+				
+		loadMore: ->
+			@collection.$fetch()
+				.then ->
+					$scope.$broadcast('scroll.infiniteScrollComplete')
+				.catch alert
+				
+		remove: (perm) ->
+			@collection.remove perm
+					
+	$scope.collection = new model.MyReservationList()
+	$scope.collection.$fetch()
+	$scope.controller = new MyReservationListView collection: $scope.collection
+	
+ReservationListCtrl = ($rootScope, $scope, model, $filter) ->
+	class ReservationListView		
+		constructor: (opts = {}) ->
+			@collection = opts.collection
+			
+			_.each @modelEvents, (handler, event) =>
+				$scope.$on event, @[handler]
+	
+			$scope.toggleGroup = (group) ->
+				if $scope.isGroupShown(group)
+					$scope.shownGroup = null
+				else
+					$scope.shownGroup = group	
+			
+			$scope.isGroupShown = (group) ->
+				return $scope.shownGroup == group
+			
+			_.each @collection.models, (resource) =>
+				resource.timeslot = [
+					{ value:'09:00 - 11:00' },
+				    { value:'11:00 - 13:00' },
+				    { value:'13:00 - 14:00' },
+				    { value:'14:00 - 16:00' },
+				    { value:'16:00 - 18:00' }
+				]
+			@currentDate = new Date
+			@currentDate.setHours(0)
+			@currentDate.setMinutes(0)
+			@currentDate.setSeconds(0)
+			@currentDate.setMilliseconds(0)
+			@getAvailableTimeslot(@currentDate)
+				
+		getAvailableTimeslot: (date) ->
+			_.each @collection.models, (resource) =>
+				resource.available = resource.timeslot.length				
+				reservationList = new model.ReservationList()
+				reservationList.$fetch({params: {date: date, resource: resource._id}}).then ->
+					$scope.$apply ->
+						_.each resource.timeslot, (obj) =>
+							@reservation = _.findWhere reservationList.models, {time: "#{obj.value}"}
+							if @reservation
+								obj.disabled = true
+								obj.reservedBy = '[ Reserved by ' + @reservation.createdBy.username + ' ]'
+								--resource.available
+							else
+								obj.disabled = false
+								obj.reservedBy = ''
+																													
+	$scope.collection = new model.ResourceList()
+	$scope.collection.$fetch().then =>
+		$scope.controller = new ReservationListView collection: $scope.collection
+	
+	$scope.currentDate = new Date($filter('date')(new Date(), 'dd-MMM-yyyy'))
+	
+	$scope.datePickerCallback = (val) ->
+		$scope.currentDate = new Date($filter('date')(val, 'dd-MMM-yyyy'))
+		$scope.controller.getAvailableTimeslot(val)
+		return
+
+
 config = ->
 	return
 	
-angular.module('starter.controller', ['ionic', 'ngCordova', 'http-auth-interceptor', 'starter.model', 'platform']).config [config]	
+angular.module('starter.controller', ['ionic', 'ngCordova', 'http-auth-interceptor', 'starter.model', 'platform', 'ngTable']).config [config]	
 angular.module('starter.controller').controller 'AppCtrl', ['$rootScope', '$scope', '$http', 'platform', 'authService', 'model', AppCtrl]
 angular.module('starter.controller').controller 'MenuCtrl', ['$scope', MenuCtrl]
 angular.module('starter.controller').controller 'FileCtrl', ['$rootScope', '$scope', '$stateParams', '$location', '$ionicModal', 'model', FileCtrl]
@@ -202,3 +405,8 @@ angular.module('starter.controller').controller 'PermissionCtrl', ['$rootScope',
 angular.module('starter.controller').controller 'AclCtrl', ['$rootScope', '$scope', 'model', AclCtrl]
 angular.module('starter.controller').controller 'SelectCtrl', ['$scope', '$ionicModal', SelectCtrl]
 angular.module('starter.controller').controller 'MultiSelectCtrl', ['$scope', '$ionicModal', MultiSelectCtrl]
+angular.module('starter.controller').controller 'ResourceCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', ResourceCtrl]
+angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', ResourceListCtrl]
+angular.module('starter.controller').controller 'ReservationCtrl', ['$rootScope', '$scope', '$ionicModal', '$filter', 'model', ReservationCtrl]
+angular.module('starter.controller').controller 'MyReservationListCtrl', ['$rootScope', '$scope', 'model', MyReservationListCtrl]
+angular.module('starter.controller').controller 'ReservationListCtrl', ['$rootScope', '$scope', 'model', '$filter', ReservationListCtrl]

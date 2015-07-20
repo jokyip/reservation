@@ -1,0 +1,50 @@
+<ion-view>
+	<ion-header-bar class="item-input-inset" align-title="left">
+	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        <h1 class='title'>My Reservation</h1>
+        <button class="button button-clear button-positive" ng-controller="ReservationCtrl" ng-click="controller.input()">New</button>
+	</ion-header-bar>
+	<ion-content>
+			<ion-item>
+				<div class='row'>
+					<div class='col-25'>
+						<b>Resource</b>
+					</div>
+					<div class='col-25'>
+						<b>Date</b> 
+					</div>
+					<div class='col-25'>
+						<b>Time</b>
+					</div>
+					<div class='col-25'>
+						<b>Purpose</b> 
+					</div>
+				</div>
+				<ion-option-button</ion-option-button>
+				<ion-option-button</ion-option-button>
+			</ion-item>	
+		<ion-list>
+			<ion-item ng-controller="ReservationCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+				<div class='row'>
+					<div class='col-25'>
+						{{model.resource.name}} 
+					</div>
+					<div class='col-25'>
+						{{model.date | date: 'dd-MM-yyyy'}} 
+					</div>
+					<div class='col-25'>
+						{{model.time}} 
+					</div>
+					<div class='col-25'>
+						{{model.purpose}} 
+					</div>
+				</div>
+				<!-- <ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); controller.edit();">Edit</ion-option-button> -->
+				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); $parent.controller.remove(model);">Delete</ion-option-button>
+			</ion-item>
+		</ion-list>
+		<ion-infinite-scroll ng-if="model.state.page < model.state.total_page" on-infinite="controller.loadMore()">
+		</ion-infinite-scroll>	
+	</ion-content>
+</ion-view>

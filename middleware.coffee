@@ -31,7 +31,7 @@ verifyToken = (token, scope) ->
 	return new Promise (fulfill, reject) ->
 		http.get env.oauth2.verifyURL, opts, (err, res, body) ->
 			if err or res.statusCode != 200
-				return reject('Unauthorized access')
+				return reject("Unauthorized access")
 					
 			# check required scope is authorized or not
 			authScope = body.scope.split(' ')

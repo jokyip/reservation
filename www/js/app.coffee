@@ -1,4 +1,4 @@
-module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch'])
+module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ionic-datepicker', 'ngTable'])
 
 module.run ($ionicPlatform, $location, $http, authService) ->
 	$ionicPlatform.ready ->
@@ -39,5 +39,29 @@ module.config ($stateProvider, $urlRouterProvider) ->
 			'menuContent':
 				templateUrl: "templates/file/list.html"
 				controller: 'FileCtrl'
+	
+	# Resource
+	$stateProvider.state 'app.resource',
+		url: "/resource"
+		views:
+			'menuContent':
+				templateUrl: "templates/resource/list.html"
+				controller: 'ResourceListCtrl'
+				
+	# Reservation
+	$stateProvider.state 'app.myreservation',
+		url: "/myreservation"
+		views:
+			'menuContent':
+				templateUrl: "templates/reservation/mylist.html"
+				controller: 'MyReservationListCtrl'	
+				
+	$stateProvider.state 'app.reservation',
+		url: "/reservation"
+		views:
+			'menuContent':
+				templateUrl: "templates/reservation/list.html"
+				controller: 'ReservationListCtrl'							
+							
 		
-	$urlRouterProvider.otherwise('/file/file')
+	$urlRouterProvider.otherwise('/file/reservation')

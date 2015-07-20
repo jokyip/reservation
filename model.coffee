@@ -192,9 +192,43 @@ FileSchema.pre 'remove', (next) ->
 
 File = mongoose.model 'File', FileSchema
 
+# Resource Schema
+ResourceSchema = new mongoose.Schema
+	name:			{ type: String }
+	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+	
+ResourceSchema.statics =
+	ordering_fields: ->
+		name: 1	
+	
+ResourceSchema.plugin(findOrCreate)
+
+# function you have to find a resource, or to create one if the resource doesn't exist
+Resource = mongoose.model 'Resource', ResourceSchema	
+
+
+# Reservation Schema
+ReservationSchema = new mongoose.Schema
+	resource:		{ type: mongoose.Schema.Types.ObjectId, ref: 'Resource' }
+	purpose:		{ type: String }
+	date:			{ type: Date }
+	time:			{ type: String }
+	createdBy:		{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+	
+ReservationSchema.statics =
+	ordering_fields: ->
+		date: 1, time: 1	
+	
+ReservationSchema.plugin(findOrCreate)
+
+# function you have to find a resource, or to create one if the resource doesn't exist
+Reservation = mongoose.model 'Reservation', ReservationSchema
+
 module.exports = 
 	Permission:	Permission
 	Tag:		Tag
 	User: 		User
 	FileUtil:	FileUtil
 	File: 		File
+	Resource:	Resource
+	Reservation:	Reservation

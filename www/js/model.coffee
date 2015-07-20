@@ -241,6 +241,42 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 			
 		toString: ->
 			@selected()?.group
+	
+	# Resource model
+	class Resource extends Model
+		$idAttribute: '_id'
+		
+		$urlRoot: "http://localhost:3000/api/resources"
+		
+	class ResourceList extends Collection
+		$idAttribute: '_id'
+	
+		$urlRoot: "http://localhost:3000/api/resources"
+		
+		$parse: (res, opts) ->
+			_.each res, (value, key) =>
+				res[key] = new Resource res[key]
+			return res
+			
+	# Reservation model
+	class Reservation extends Model
+		$idAttribute: '_id'
+		
+		$urlRoot: "http://localhost:3000/api/reservations"
+		
+	class ReservationList extends Collection	
+		$idAttribute: '_id'
+	
+		$urlRoot: "http://localhost:3000/api/reservations"
+		
+		$parse: (res, opts) ->
+			_.each res, (value, key) =>
+				res[key] = new Reservation res[key]
+			return res
+			
+	class MyReservationList extends ReservationList
+		$urlRoot: "http://localhost:3000/api/myreservations"				
+			
 		
 	Model:		Model
 	Collection:	Collection
@@ -250,6 +286,11 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 	Acl:		Acl
 	UserGrps:	UserGrps
 	FileGrps:	FileGrps
+	Resource:	Resource
+	ResourceList:	ResourceList
+	Reservation:	Reservation
+	ReservationList:	ReservationList
+	MyReservationList:	MyReservationList
 			
 config = ->
 	return

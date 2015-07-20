@@ -1,0 +1,41 @@
+<div ng-controller="ReservationListCtrl">
+
+    Group by:
+    <select class="form-control" ng-model="groupby">
+        <option value="resourceName">Resource</option>
+        <option value="date">Date</option>
+        <option value="time">Time</option>
+        <option value="purpose">Purpose</option>
+    </select>
+    <p>Grouped by: <b>{{groupby}}</b></p>
+
+
+    <table ng-table="tableParams" class="table">
+        <tbody ng-repeat="group in $groups">
+        <tr class="ng-table-group">
+            <td colspan="{{$columns.length}}">
+                <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                    <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                    <strong>{{ group.value }}</strong>
+                </a>
+            </td>
+        </tr>
+        <tr ng-hide="group.$hideRows" ng-repeat="model in group.data">
+            <td sortable="resourceName" data-title="'Resource'">
+                {{model.resource.name}} 
+            </td>
+            <td sortable="date" data-title="'Date'">
+                {{model.date | date: 'dd-MM-yyyy'}}
+            </td>
+            <td sortable="time" data-title="'Time'">
+                {{model.time}}
+            </td>
+            <td sortable="purpose" data-title="'Purpose'">
+                {{model.purpose}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+

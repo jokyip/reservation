@@ -12,7 +12,7 @@ source = require 'vinyl-source-stream'
 
 paths = sass: ['./scss/**/*.scss']
 
-gulp.task 'default', ['plugin', 'sass', 'coffee']
+gulp.task 'default', ['sass', 'coffee']
 
 gulp.task 'sass', (done) ->
   gulp.src('./scss/ionic.app.scss')
