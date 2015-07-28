@@ -15,31 +15,11 @@ module.run ($ionicPlatform, $location, $http, authService) ->
 		
 module.config ($stateProvider, $urlRouterProvider) ->
 	$stateProvider.state 'app',
-		url: "/file"
+		url: ""
 		abstract: true
 		controller: 'AppCtrl'
 		templateUrl: "templates/menu.html"
-		
-	$stateProvider.state 'app.search',
-		url: "/search"
-		views:
-			'menuContent':
-				templateUrl: "templates/search.html"
-	
-	$stateProvider.state 'app.permission',
-		url: "/permission"
-		views:
-			'menuContent':
-				templateUrl: "templates/permission/list.html"
-				controller: "AclCtrl"
 
-	$stateProvider.state 'app.file',
-		url: "/file?path"
-		views:
-			'menuContent':
-				templateUrl: "templates/file/list.html"
-				controller: 'FileCtrl'
-	
 	# Resource
 	$stateProvider.state 'app.resource',
 		url: "/resource"
@@ -54,14 +34,21 @@ module.config ($stateProvider, $urlRouterProvider) ->
 		views:
 			'menuContent':
 				templateUrl: "templates/reservation/mylist.html"
-				controller: 'MyReservationListCtrl'	
+				controller: 'MyReservationListCtrl'
 				
 	$stateProvider.state 'app.reservation',
 		url: "/reservation"
 		views:
 			'menuContent':
 				templateUrl: "templates/reservation/list.html"
-				controller: 'ReservationListCtrl'							
+				controller: 'ReservationListCtrl'
+				
+	$stateProvider.state 'app.reservationInput',
+		url: "/reservation/select"
+		views:
+			'menuContent':
+				templateUrl: "templates/reservation/select.html"
+				controller: 'ReservationCtrl'										
 							
 		
-	$urlRouterProvider.otherwise('/file/reservation')
+	$urlRouterProvider.otherwise('/resource')

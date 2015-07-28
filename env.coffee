@@ -1,4 +1,4 @@
-proj = 'file'
+proj = 'resource'
 
 app =
 	url:	"http://localhost:3000/#{proj}"

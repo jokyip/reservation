@@ -1,10 +1,8 @@
 <ion-view>
-	<ion-header-bar class="item-input-inset" align-title="left">
-	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-        </button>
-        <h1 class='title'>Resource</h1>
-        <button class="button button-clear button-positive" ng-controller="ResourceCtrl" ng-click="controller.input()">New</button>
-	</ion-header-bar>
+	<ion-nav-buttons side="left">
+      <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+      <h1 class='title'>Resource</h1>
+    </ion-nav-buttons>
 	<ion-content>
 		<ion-list>
 			<ion-item ng-controller="ResourceCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
