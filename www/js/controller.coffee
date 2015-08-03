@@ -243,7 +243,7 @@ ResourceListCtrl = ($rootScope, $scope, model) ->
 	$scope.controller = new ResourceListView collection: $scope.collection
 	
 	
-ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model) ->
+ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams, $state, $ionicNavBarDelegate) ->
 	class ReservationView		
 		constructor: (opts = {}) ->
 			@model = opts.model
@@ -288,30 +288,29 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model) ->
 				$scope.modal = modal
 				$scope.modal.show()
 				
-		edit: (resource, date, time) ->
-			$ionicModal.fromTemplateUrl('templates/reservation/select.html', scope: $scope).then (modal) =>
-				$scope.model = new model.Reservation
-				$scope.model.resource = resource
-				$scope.model.date = date				
-				$scope.modal = modal
-				$scope.modal.show()
-				@getAvailableTimeslot().then =>
-					$scope.model.time = time			
-				
 		ok: ->
-			$scope.model.$save();
-			$scope.modal.remove();
+			$scope.model.$save().then =>
+				$state.transitionTo 'app.reservation', { date: $scope.model.date }, { reload: true }
 						
 		cancel: ->
 			_.extend @model, @model?.previousAttributes
-			$scope.modal.remove();
-																													
-	$scope.controller = new ReservationView model: $scope.model
+			$state.go 'app.reservation',{},{reload: true}
+	
+	$scope.model = new model.Reservation
+	$scope.model.resource = $stateParams.resource
+	$scope.model.date = $stateParams.date
+	$scope.currentDate = $stateParams.date
+	$scope.controller = new ReservationView collection: $scope.model
+	$scope.controller.getAvailableTimeslot().then =>
+		$scope.model.time = $stateParams.time
 	
 	$scope.datePickerCallback = (val) ->
-	  $scope.model.date = val
-	  $scope.controller.getAvailableTimeslot()
-	  return
+		if val
+			$scope.model.date = new Date($filter('date')(val, 'dd-MMM-yyyy'))
+			$scope.controller.getAvailableTimeslot()
+		return
+		
+	$ionicNavBarDelegate.showBackButton true	
 	
 MyReservationListCtrl = ($rootScope, $scope, model) ->
 	class MyReservationListView
@@ -334,10 +333,11 @@ MyReservationListCtrl = ($rootScope, $scope, model) ->
 	$scope.collection.$fetch()
 	$scope.controller = new MyReservationListView collection: $scope.collection
 	
-ReservationListCtrl = ($rootScope, $scope, model, $filter) ->
+ReservationListCtrl = ($rootScope, $scope, model, $filter, $stateParams, $state, $ionicNavBarDelegate) ->
 	class ReservationListView		
 		constructor: (opts = {}) ->
 			@collection = opts.collection
+			@currentDate = opts.currentDate
 			
 			_.each @modelEvents, (handler, event) =>
 				$scope.$on event, @[handler]
@@ -359,12 +359,15 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter) ->
 				    { value:'14:00 - 16:00' },
 				    { value:'16:00 - 18:00' }
 				]
-			@currentDate = new Date
+			
 			@currentDate.setHours(0)
 			@currentDate.setMinutes(0)
 			@currentDate.setSeconds(0)
 			@currentDate.setMilliseconds(0)
 			@getAvailableTimeslot(@currentDate)
+			
+		edit: (resource, date, time) ->
+			$state.go 'app.reservationInput', { resource: resource, date: date, time: time }	
 				
 		getAvailableTimeslot: (date) ->
 			_.each @collection.models, (resource) =>
@@ -373,6 +376,7 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter) ->
 				reservationList.$fetch({params: {date: date, resource: resource._id}}).then ->
 					$scope.$apply ->
 						_.each resource.timeslot, (obj) =>
+							obj.date = date
 							@reservation = _.findWhere reservationList.models, {time: "#{obj.value}"}
 							if @reservation
 								obj.disabled = true
@@ -381,18 +385,23 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter) ->
 							else
 								obj.disabled = false
 								obj.reservedBy = ''
+	
+	currDate = new Date	
+	if $stateParams.date
+		currDate = $stateParams.date
+	$scope.currentDate = new Date($filter('date')(currDate, 'dd-MMM-yyyy'))
 																													
 	$scope.collection = new model.ResourceList()
 	$scope.collection.$fetch().then =>
-		$scope.controller = new ReservationListView collection: $scope.collection
-	
-	$scope.currentDate = new Date($filter('date')(new Date(), 'dd-MMM-yyyy'))
-	
+		$scope.controller = new ReservationListView collection: $scope.collection, currentDate: $scope.currentDate
+		
 	$scope.datePickerCallback = (val) ->
-		$scope.currentDate = new Date($filter('date')(val, 'dd-MMM-yyyy'))
-		$scope.controller.getAvailableTimeslot(val)
+		if val
+			$scope.currentDate = new Date($filter('date')(val, 'dd-MMM-yyyy'))
+			$scope.controller.getAvailableTimeslot(val)
 		return
-
+	
+	$ionicNavBarDelegate.showBackButton false
 
 config = ->
 	return
@@ -407,6 +416,6 @@ angular.module('starter.controller').controller 'SelectCtrl', ['$scope', '$ionic
 angular.module('starter.controller').controller 'MultiSelectCtrl', ['$scope', '$ionicModal', MultiSelectCtrl]
 angular.module('starter.controller').controller 'ResourceCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', ResourceCtrl]
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', ResourceListCtrl]
-angular.module('starter.controller').controller 'ReservationCtrl', ['$rootScope', '$scope', '$ionicModal', '$filter', 'model', ReservationCtrl]
+angular.module('starter.controller').controller 'ReservationCtrl', ['$rootScope', '$scope', '$ionicModal', '$filter', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$rootScope', '$scope', 'model', MyReservationListCtrl]
-angular.module('starter.controller').controller 'ReservationListCtrl', ['$rootScope', '$scope', 'model', '$filter', ReservationListCtrl]
+angular.module('starter.controller').controller 'ReservationListCtrl', ['$rootScope', '$scope', 'model', '$filter', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationListCtrl]

@@ -27,7 +27,7 @@
 				<ion-option-button</ion-option-button>
 			</ion-item>	
 		<ion-list>
-			<ion-item ng-controller="ReservationCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+			<ion-item ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
 				<div class='row'>
 					<div class='col-25'>
 						{{model.resource.name}} 

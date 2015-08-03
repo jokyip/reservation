@@ -26,8 +26,8 @@
 		                ng-repeat="item in group.timeslot"
 		                ng-show="isGroupShown(group)"
 		                ng-disabled="item.disabled"
-		                ng-controller="ReservationCtrl">
-		        {{item.value}} <b>{{ item.reservedBy }}</b> <button class="button button-clear button-positive" ng-controller="ReservationCtrl" ng-click="controller.edit(group._id, currentDate, item.value)" ng-if="!item.reservedBy">Reserve</button>
+		                ng-controller="ReservationListCtrl">
+		        {{item.value}} <b>{{ item.reservedBy }}</b> <button class="button button-clear button-positive" ng-click="controller.edit(group._id, item.date, item.value)" ng-if="!item.reservedBy">Reserve</button>
 		      </ion-item>
 		    </div>
 		</ion-list>

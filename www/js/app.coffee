@@ -38,6 +38,8 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				
 	$stateProvider.state 'app.reservation',
 		url: "/reservation"
+		cache: false
+		params: {date: null}
 		views:
 			'menuContent':
 				templateUrl: "templates/reservation/list.html"
@@ -45,6 +47,7 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				
 	$stateProvider.state 'app.reservationInput',
 		url: "/reservation/select"
+		params: {'resource', 'date', 'time'}		
 		views:
 			'menuContent':
 				templateUrl: "templates/reservation/select.html"
