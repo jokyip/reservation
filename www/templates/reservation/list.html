@@ -25,8 +25,7 @@
 		      <ion-item class="item-accordion"
 		                ng-repeat="item in group.timeslot"
 		                ng-show="isGroupShown(group)"
-		                ng-disabled="item.disabled"
-		                ng-controller="ReservationListCtrl">
+		                ng-disabled="item.disabled">
 		        {{item.value}} <b>{{ item.reservedBy }}</b> <button class="button button-clear button-positive" ng-click="controller.edit(group._id, item.date, item.value)" ng-if="!item.reservedBy">Reserve</button>
 		      </ion-item>
 		    </div>

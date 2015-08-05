@@ -191,43 +191,41 @@ AclCtrl = ($rootScope, $scope, model) ->
 	$scope.collection.$fetch()
 	$scope.controller = new AclView collection: $scope.collection
 
-ResourceCtrl = ($rootScope, $scope, $ionicModal, model) ->
+ResourceCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $ionicNavBarDelegate) ->
 	class ResourceView		
 		constructor: (opts = {}) ->
 			@model = opts.model
 			
 			_.each @modelEvents, (handler, event) =>
 				$scope.$on event, @[handler]
-			
-		input: ->
-			$ionicModal.fromTemplateUrl('templates/resource/select.html', scope: $scope).then (modal) =>
-				$scope.model = new model.Resource				
-				$scope.modal = modal
-				$scope.modal.show()
 				
 		edit: ->
-			$ionicModal.fromTemplateUrl('templates/resource/select.html', scope: $scope).then (modal) =>
-				$scope.modal = modal
-				$scope.modal.show()		
-				
+			$state.transitionTo 'app.resourceInput', { model: $scope.model }, { reload: true }
+						
 		ok: ->
-			$scope.model.$save({name: $scope.model.name});
-			$scope.$parent.collection.$fetch();
-			$scope.modal.hide();
+			$scope.model.$save({name: $scope.model.name}).then =>
+				$state.transitionTo 'app.resource', {}, { reload: true }
 						
 		cancel: ->
 			_.extend @model, @model.previousAttributes
 			$scope.modal.hide();
-																													
+
+	if $stateParams.model
+		$scope.model = $stateParams.model
 	$scope.controller = new ResourceView model: $scope.model
 	
-ResourceListCtrl = ($rootScope, $scope, model) ->
+	$ionicNavBarDelegate.showBackButton true
+	
+ResourceListCtrl = ($rootScope, $scope, model, $state) ->
 	class ResourceListView
 		constructor: (opts = {}) ->
 			_.each @events, (handler, event) =>
 				$scope.$on event, @[handler]
 			
 			@collection = opts.collection
+			
+		create: ->
+			$state.transitionTo 'app.resourceInput', { model: new model.Resource }, { reload: true }	
 				
 		loadMore: ->
 			@collection.$fetch()
@@ -279,14 +277,6 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams
 						else
 							obj.disabled = false
 							obj.reservedBy = ''
-					
-		input: ->
-			$ionicModal.fromTemplateUrl('templates/reservation/select.html', scope: $scope).then (modal) =>
-				$scope.model = new model.Reservation
-				$scope.model.date = $scope.currentDate	
-				$scope.model.resource = ''				
-				$scope.modal = modal
-				$scope.modal.show()
 				
 		ok: ->
 			$scope.model.$save().then =>
@@ -310,15 +300,18 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams
 			$scope.controller.getAvailableTimeslot()
 		return
 		
-	$ionicNavBarDelegate.showBackButton true	
+	$ionicNavBarDelegate.showBackButton true
 	
-MyReservationListCtrl = ($rootScope, $scope, model) ->
+MyReservationListCtrl = ($rootScope, $scope, model, $state) ->
 	class MyReservationListView
 		constructor: (opts = {}) ->
 			_.each @events, (handler, event) =>
 				$scope.$on event, @[handler]
 			
 			@collection = opts.collection
+			
+		create: ->
+			$state.transitionTo 'app.reservationInput', { date: new Date }, { reload: true }	
 				
 		loadMore: ->
 			@collection.$fetch()
@@ -414,8 +407,8 @@ angular.module('starter.controller').controller 'PermissionCtrl', ['$rootScope',
 angular.module('starter.controller').controller 'AclCtrl', ['$rootScope', '$scope', 'model', AclCtrl]
 angular.module('starter.controller').controller 'SelectCtrl', ['$scope', '$ionicModal', SelectCtrl]
 angular.module('starter.controller').controller 'MultiSelectCtrl', ['$scope', '$ionicModal', MultiSelectCtrl]
-angular.module('starter.controller').controller 'ResourceCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', ResourceCtrl]
-angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', ResourceListCtrl]
+angular.module('starter.controller').controller 'ResourceCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ResourceCtrl]
+angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', '$state', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$rootScope', '$scope', '$ionicModal', '$filter', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationCtrl]
-angular.module('starter.controller').controller 'MyReservationListCtrl', ['$rootScope', '$scope', 'model', MyReservationListCtrl]
+angular.module('starter.controller').controller 'MyReservationListCtrl', ['$rootScope', '$scope', 'model', '$state', MyReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationListCtrl', ['$rootScope', '$scope', 'model', '$filter', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationListCtrl]

@@ -23,14 +23,25 @@ module.config ($stateProvider, $urlRouterProvider) ->
 	# Resource
 	$stateProvider.state 'app.resource',
 		url: "/resource"
+		cache: false
 		views:
 			'menuContent':
 				templateUrl: "templates/resource/list.html"
 				controller: 'ResourceListCtrl'
 				
+	$stateProvider.state 'app.resourceInput',
+		url: "/resource/select"
+		cache: false
+		params: {model: null}
+		views:
+			'menuContent':
+				templateUrl: "templates/resource/select.html"
+				controller: 'ResourceCtrl'			
+				
 	# Reservation
 	$stateProvider.state 'app.myreservation',
 		url: "/myreservation"
+		cache: false
 		views:
 			'menuContent':
 				templateUrl: "templates/reservation/mylist.html"
@@ -47,7 +58,8 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				
 	$stateProvider.state 'app.reservationInput',
 		url: "/reservation/select"
-		params: {'resource', 'date', 'time'}		
+		cache: false
+		params: {resource: null, date: null, time: null}		
 		views:
 			'menuContent':
 				templateUrl: "templates/reservation/select.html"
