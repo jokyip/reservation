@@ -5,11 +5,7 @@
   "scripts": {
     "start": "node_modules/.bin/coffee --nodejs --debug app.coffee"
   },
-  "dependencies": {
-    "backbone": "~1.1.2",
-    "backbone-forms": "https://github.com/powmedia/backbone-forms/archive/master.tar.gz",
-    "backbone.marionette": "^2.3.0",
-    "backbone.paginator": "^2.0.2",
+  "dependencies": {    
     "body-parser": "^1.12.2",
     "coffee-script": "^1.9.1",
     "connect-busboy": "0.0.1",
@@ -33,7 +29,6 @@
     "passport-http-bearer": "1.0.1",
     "passport-ttsoon": "https://github.com/twhtanghk/passport-ttsoon/archive/master.tar.gz",
     "promise": "^4.0.0",
-    "restim": "https://github.com/twhtanghk/restim/archive/master.tar.gz",
     "serve-favicon": "^2.2.0",
     "underscore": "~1.6.0",
     "zappajs": "~0.4.22"
