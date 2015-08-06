@@ -296,7 +296,7 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams
 	
 	$scope.datePickerCallback = (val) ->
 		if val
-			$scope.model.date = new Date($filter('date')(val, 'dd-MMM-yyyy'))
+			$scope.model.date = new Date($filter('date')(val, 'MMM dd yyyy UTC'))
 			$scope.controller.getAvailableTimeslot()
 		return
 		
@@ -382,7 +382,7 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter, $stateParams, $state,
 	currDate = new Date	
 	if $stateParams.date
 		currDate = $stateParams.date
-	$scope.currentDate = new Date($filter('date')(currDate, 'dd-MMM-yyyy'))
+	$scope.currentDate = new Date($filter('date')(currDate, 'MMM dd yyyy UTC'))
 																													
 	$scope.collection = new model.ResourceList()
 	$scope.collection.$fetch().then =>
@@ -390,7 +390,7 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter, $stateParams, $state,
 		
 	$scope.datePickerCallback = (val) ->
 		if val
-			$scope.currentDate = new Date($filter('date')(val, 'dd-MMM-yyyy'))
+			$scope.currentDate = new Date($filter('date')(val, 'MMM dd yyyy UTC'))
 			$scope.controller.getAvailableTimeslot(val)
 		return
 	
