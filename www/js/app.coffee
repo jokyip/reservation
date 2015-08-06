@@ -66,4 +66,4 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				controller: 'ReservationCtrl'										
 							
 		
-	$urlRouterProvider.otherwise('/resource')
+	$urlRouterProvider.otherwise('/reservation')

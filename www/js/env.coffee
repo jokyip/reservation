@@ -16,5 +16,5 @@ module.exports =
 		opts:
 			response_type:	"token"
 			scope:			"https://mppsrc.ogcio.hksarg/org/users https://mppsrc.ogcio.hksarg/file https://mppsrc.ogcio.hksarg/xmpp"
-			client_id:		if @isNative() then 'fileappPRD' else 'resourceDEVAuth'
+			client_id:		if @isNative() then 'fileappPRD' else 'reservationDEVAuth'
 			redirectUrl:	if @isNative() then 'http://localhost/callback' else 'http://localhost:3000/file/'

@@ -1,4 +1,4 @@
-proj = 'resource'
+proj = 'reservation'
 
 app =
 	url:	"http://localhost:3000/#{proj}"
