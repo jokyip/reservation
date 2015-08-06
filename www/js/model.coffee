@@ -246,12 +246,12 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 	class Resource extends Model
 		$idAttribute: '_id'
 		
-		$urlRoot: "http://localhost:3000/api/resources"
+		$urlRoot: "#{env.serverUrl()}/api/resources"
 		
 	class ResourceList extends Collection
 		$idAttribute: '_id'
 	
-		$urlRoot: "http://localhost:3000/api/resources"
+		$urlRoot: "#{env.serverUrl()}/api/resources"
 		
 		$parse: (res, opts) ->
 			_.each res, (value, key) =>
@@ -262,12 +262,12 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 	class Reservation extends Model
 		$idAttribute: '_id'
 		
-		$urlRoot: "http://localhost:3000/api/reservations"
+		$urlRoot: "#{env.serverUrl()}/api/reservations"
 		
 	class ReservationList extends Collection	
 		$idAttribute: '_id'
 	
-		$urlRoot: "http://localhost:3000/api/reservations"
+		$urlRoot: "#{env.serverUrl()}/api/reservations"
 		
 		$parse: (res, opts) ->
 			_.each res, (value, key) =>
@@ -275,7 +275,7 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 			return res
 			
 	class MyReservationList extends ReservationList
-		$urlRoot: "http://localhost:3000/api/myreservations"				
+		$urlRoot: "#{env.serverUrl()}/api/myreservations"				
 			
 		
 	Model:		Model
