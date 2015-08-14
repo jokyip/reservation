@@ -1,0 +1,34 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+	<h1 class="title">Select</h1>
+	<button class="button button-clear button-positive" ng-click="controller.ok()">OK</button>
+  </ion-nav-buttons>
+  <ion-content padding="true">
+	<div class="item item-input" ng-init="item = model.resource; item.label = item.name">
+	  <span class="input-label">Resource</span>
+		<fancy-select-object
+			template-url='templates/reservation/select.html'
+			ng-selected="item"
+			ng-model="resourceList.models"
+			title="Select Resource">
+		</fancy-select-object>
+	</div>
+	<label class="item item-input">
+	  <span class="input-label">Date</span>
+		<ionic-datepicker idate="currentDate" disablepreviousdates="true"  callback="datePickerCallback">
+		    <button class="button button-block button-positive"> {{ currentDate | date:'dd - MMMM - yyyy' }} </button>
+		</ionic-datepicker>
+	</label>
+	<label class="item item-input">
+	  <span class="input-label">Timeslot</span>
+	  	<ion-list>
+	  	<ion-radio ng-repeat="item in timeslot" ng-value="item.value" ng-model="model.time" name="timeslot" ng-disabled="item.disabled">{{ item.value }} <b>{{ item.reservedBy }}</b></ion-radio>
+	  	</ion-list>
+	</label>    
+	<label class="item item-input">
+	  <span class="input-label">Purpose</span>
+	  <input type="text" ng-model="model.purpose">
+	</label>
+	
+  </ion-content>
+</ion-view>

@@ -1,4 +1,4 @@
-module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ionic-datepicker', 'ngTable'])
+module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ionic-datepicker', 'ngFancySelect'])
 
 module.run ($ionicPlatform, $location, $http, authService) ->
 	$ionicPlatform.ready ->
@@ -20,6 +20,24 @@ module.config ($stateProvider, $urlRouterProvider) ->
 		controller: 'AppCtrl'
 		templateUrl: "templates/menu.html"
 
+	# Location
+	$stateProvider.state 'app.location',
+		url: "/location"
+		cache: false
+		views:
+			'menuContent':
+				templateUrl: "templates/location/list.html"
+				controller: 'LocationListCtrl'
+				
+	$stateProvider.state 'app.locationCreate',
+		url: "/location/create"
+		cache: false
+		params: {model: null}
+		views:
+			'menuContent':
+				templateUrl: "templates/location/create.html"
+				controller: 'LocationCtrl'
+
 	# Resource
 	$stateProvider.state 'app.resource',
 		url: "/resource"
@@ -29,13 +47,13 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				templateUrl: "templates/resource/list.html"
 				controller: 'ResourceListCtrl'
 				
-	$stateProvider.state 'app.resourceInput',
-		url: "/resource/select"
+	$stateProvider.state 'app.resourceCreate',
+		url: "/resource/create"
 		cache: false
 		params: {model: null}
 		views:
 			'menuContent':
-				templateUrl: "templates/resource/select.html"
+				templateUrl: "templates/resource/create.html"
 				controller: 'ResourceCtrl'			
 				
 	# Reservation
@@ -56,13 +74,13 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				templateUrl: "templates/reservation/list.html"
 				controller: 'ReservationListCtrl'
 				
-	$stateProvider.state 'app.reservationInput',
-		url: "/reservation/select"
+	$stateProvider.state 'app.reservationCreate',
+		url: "/reservation/create"
 		cache: false
 		params: {resource: null, date: null, time: null}		
 		views:
 			'menuContent':
-				templateUrl: "templates/reservation/select.html"
+				templateUrl: "templates/reservation/create.html"
 				controller: 'ReservationCtrl'										
 							
 		

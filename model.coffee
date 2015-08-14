@@ -192,6 +192,21 @@ FileSchema.pre 'remove', (next) ->
 
 File = mongoose.model 'File', FileSchema
 
+# Location Schema
+LocationSchema = new mongoose.Schema
+	name:			{ type: String }
+	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+	
+LocationSchema.statics =
+	ordering_fields: ->
+		name: 1	
+	
+LocationSchema.plugin(findOrCreate)
+
+# function you have to find a location, or to create one if the location doesn't exist
+Location = mongoose.model 'Location', LocationSchema	
+
+
 # Resource Schema
 ResourceSchema = new mongoose.Schema
 	name:			{ type: String }
@@ -230,5 +245,6 @@ module.exports =
 	User: 		User
 	FileUtil:	FileUtil
 	File: 		File
+	Location:	Location
 	Resource:	Resource
 	Reservation:	Reservation

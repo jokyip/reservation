@@ -191,6 +191,55 @@ AclCtrl = ($rootScope, $scope, model) ->
 	$scope.collection.$fetch()
 	$scope.controller = new AclView collection: $scope.collection
 
+LocationCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $ionicNavBarDelegate) ->
+	class LocationView		
+		constructor: (opts = {}) ->
+			@model = opts.model
+			
+			_.each @modelEvents, (handler, event) =>
+				$scope.$on event, @[handler]
+				
+		edit: ->
+			$state.transitionTo 'app.locationCreate', { model: $scope.model }, { reload: true }
+						
+		ok: ->
+			$scope.model.$save({name: $scope.model.name}).then =>
+				$state.transitionTo 'app.location', {}, { reload: true }
+						
+		cancel: ->
+			_.extend @model, @model.previousAttributes
+			$scope.modal.hide();
+
+	if $stateParams.model
+		$scope.model = $stateParams.model
+	$scope.controller = new LocationView model: $scope.model
+	
+	$ionicNavBarDelegate.showBackButton true
+	
+LocationListCtrl = ($rootScope, $scope, model, $state) ->
+	class LocationListView
+		constructor: (opts = {}) ->
+			_.each @events, (handler, event) =>
+				$scope.$on event, @[handler]
+			
+			@collection = opts.collection
+			
+		create: ->
+			$state.transitionTo 'app.locationCreate', { model: new model.Location }, { reload: true }	
+				
+		loadMore: ->
+			@collection.$fetch()
+				.then ->
+					$scope.$broadcast('scroll.infiniteScrollComplete')
+				.catch alert
+				
+		remove: (perm) ->
+			@collection.remove perm
+	
+	$scope.collection = new model.LocationList()
+	$scope.collection.$fetch()
+	$scope.controller = new LocationListView collection: $scope.collection
+
 ResourceCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $ionicNavBarDelegate) ->
 	class ResourceView		
 		constructor: (opts = {}) ->
@@ -200,7 +249,7 @@ ResourceCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $i
 				$scope.$on event, @[handler]
 				
 		edit: ->
-			$state.transitionTo 'app.resourceInput', { model: $scope.model }, { reload: true }
+			$state.transitionTo 'app.resourceCreate', { model: $scope.model }, { reload: true }
 						
 		ok: ->
 			$scope.model.$save({name: $scope.model.name}).then =>
@@ -225,7 +274,7 @@ ResourceListCtrl = ($rootScope, $scope, model, $state) ->
 			@collection = opts.collection
 			
 		create: ->
-			$state.transitionTo 'app.resourceInput', { model: new model.Resource }, { reload: true }	
+			$state.transitionTo 'app.resourceCreate', { model: new model.Resource }, { reload: true }	
 				
 		loadMore: ->
 			@collection.$fetch()
@@ -251,10 +300,10 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams
 				
 			$scope.$on 'modal.removed', ->					    		
 	    		$scope.$parent.controller.collection.$fetch()
-	    		$scope.$parent.model?.$fetch()	
-			
+	    		$scope.$parent.model?.$fetch()
+
 			$scope.resourceList = new model.ResourceList()
-			$scope.resourceList.$fetch()
+			$scope.resourceList.$fetch()		
 			
 			$scope.timeslot = [
 				{ value:'09:00 - 11:00' },
@@ -267,7 +316,7 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams
 		getAvailableTimeslot: ->
 			$scope.model.time = ''
 			reservationList = new model.ReservationList()
-			reservationList.$fetch({params: {date: $scope.model.date, resource: $scope.model.resource}}).then ->
+			reservationList.$fetch({params: {date: $scope.model.date, resource: $scope.model.resource._id}}).then ->
 				$scope.$apply ->
 					_.each $scope.timeslot, (obj) =>
 						@reservation = _.findWhere reservationList.models, {time: "#{obj.value}"}
@@ -296,9 +345,13 @@ ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams
 	
 	$scope.datePickerCallback = (val) ->
 		if val
-			$scope.model.date = new Date($filter('date')(val, 'MMM dd yyyy UTC'))
+			$scope.model.date = val
 			$scope.controller.getAvailableTimeslot()
 		return
+		
+	$scope.$on 'selectedResource', (event, item) ->
+		$scope.model.resource = item
+		$scope.controller.getAvailableTimeslot()	    	
 		
 	$ionicNavBarDelegate.showBackButton true
 	
@@ -311,7 +364,7 @@ MyReservationListCtrl = ($rootScope, $scope, model, $state) ->
 			@collection = opts.collection
 			
 		create: ->
-			$state.transitionTo 'app.reservationInput', { date: new Date }, { reload: true }	
+			$state.transitionTo 'app.reservationCreate', { date: new Date }, { reload: true }	
 				
 		loadMore: ->
 			@collection.$fetch()
@@ -360,7 +413,7 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter, $stateParams, $state,
 			@getAvailableTimeslot(@currentDate)
 			
 		edit: (resource, date, time) ->
-			$state.go 'app.reservationInput', { resource: resource, date: date, time: time }	
+			$state.go 'app.reservationCreate', { resource: resource, date: date, time: time }	
 				
 		getAvailableTimeslot: (date) ->
 			_.each @collection.models, (resource) =>
@@ -399,7 +452,7 @@ ReservationListCtrl = ($rootScope, $scope, model, $filter, $stateParams, $state,
 config = ->
 	return
 	
-angular.module('starter.controller', ['ionic', 'ngCordova', 'http-auth-interceptor', 'starter.model', 'platform', 'ngTable']).config [config]	
+angular.module('starter.controller', ['ionic', 'ngCordova', 'http-auth-interceptor', 'starter.model', 'platform']).config [config]	
 angular.module('starter.controller').controller 'AppCtrl', ['$rootScope', '$scope', '$http', 'platform', 'authService', 'model', AppCtrl]
 angular.module('starter.controller').controller 'MenuCtrl', ['$scope', MenuCtrl]
 angular.module('starter.controller').controller 'FileCtrl', ['$rootScope', '$scope', '$stateParams', '$location', '$ionicModal', 'model', FileCtrl]
@@ -407,6 +460,8 @@ angular.module('starter.controller').controller 'PermissionCtrl', ['$rootScope',
 angular.module('starter.controller').controller 'AclCtrl', ['$rootScope', '$scope', 'model', AclCtrl]
 angular.module('starter.controller').controller 'SelectCtrl', ['$scope', '$ionicModal', SelectCtrl]
 angular.module('starter.controller').controller 'MultiSelectCtrl', ['$scope', '$ionicModal', MultiSelectCtrl]
+angular.module('starter.controller').controller 'LocationCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', LocationCtrl]
+angular.module('starter.controller').controller 'LocationListCtrl', ['$rootScope', '$scope', 'model', '$state', LocationListCtrl]
 angular.module('starter.controller').controller 'ResourceCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ResourceCtrl]
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', '$state', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$rootScope', '$scope', '$ionicModal', '$filter', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationCtrl]
