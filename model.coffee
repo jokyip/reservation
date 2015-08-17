@@ -210,6 +210,7 @@ Location = mongoose.model 'Location', LocationSchema
 # Resource Schema
 ResourceSchema = new mongoose.Schema
 	name:			{ type: String }
+	location:	{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }
 	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 	
 ResourceSchema.statics =
@@ -236,7 +237,7 @@ ReservationSchema.statics =
 	
 ReservationSchema.plugin(findOrCreate)
 
-# function you have to find a resource, or to create one if the resource doesn't exist
+# function you have to find a reservation, or to create one if the reservation doesn't exist
 Reservation = mongoose.model 'Reservation', ReservationSchema
 
 module.exports = 

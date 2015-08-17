@@ -81,3 +81,10 @@ label[disabled] .item-content {
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
 }
+
+div.row .col {
+	padding: 0px;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+  	white-space: nowrap;
+}
