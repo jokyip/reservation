@@ -20,7 +20,7 @@
 			</div>
 		</ion-item>	
 		<ion-list>
-			<ion-item ng-controller="ResourceCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+			<ion-item ng-controller="ResourceCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''" on-tap="$event.stopPropagation(); controller.read();">				
 				<div class='row'>
 					<div class='col-67 col'>
 						{{model.name}}

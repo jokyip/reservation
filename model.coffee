@@ -210,8 +210,12 @@ Location = mongoose.model 'Location', LocationSchema
 # Resource Schema
 ResourceSchema = new mongoose.Schema
 	name:			{ type: String }
+	capacity:		{ type: Number }
+	contactNo:		{ type: String }
+	ucFacility:		{ type: String }
+	adminAccept:	{ type: String }
 	location:	{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }
-	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }	
 	
 ResourceSchema.statics =
 	ordering_fields: ->

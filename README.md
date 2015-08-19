@@ -1,38 +1,44 @@
-restfile
+reservation
 ========
 
-Web Server with Restful API to provide File Storage
+Web Server with Restful API to provide Reservation function
 
 API
 ===
 
 ```
-get api/tag - get all file tags of current login user
-post api/file/:path - create file or folder under current login user home directory
-get api/file/:path - get properties (e.g. filename, tags) of the specified file or list of file properties of the specified folder 
-get api/file/content/:path - get content of the specified file or folder
-put api/file/:path - update details (e.g. filename, tags, content) of the specified file or folder
-del api/file/:path - delete the specified file or folder
 
-post api/permission - create permission
-get api/permission - get list of permissions
-get api/permission/:id - get permission with specified id
-put api/permission/:id - update permission detail with the specified id
-del api/permission/:id - delete permission with the specified id
+post api/locations - create locations
+get api/locations - get list of locations
+get api/locations/:id - get locations with specified id
+put api/locations/:id - update locations detail with the specified id
+del api/locations/:id - delete locations with the specified id
+
+post api/resources - create resources
+get api/resources - get list of resources
+get api/resources/:id - get resources with specified id
+put api/resources/:id - update resources detail with the specified id
+del api/resources/:id - delete resources with the specified id
+
+post api/reservations - create reservations
+get api/reservations - get list of reservations
+get api/reservations/:id - get reservations with specified id
+put api/reservations/:id - update reservations detail with the specified id
+del api/reservations/:id - delete reservations with the specified id
 ```
 
 Browser
 =======
 
 ```
-http://mob.myvnc.com/file/:path - get content of the specified file or folder
+http://mob.myvnc.com/reservation - site URL
 ```
 
 Configuration
 =============
 
-*   git clone https://github.com/twhtanghk/restfile.git
-*   cd restfile
+*   git clone https://github.com/jokyip/reservation.git
+*   cd reservation
 *   npm install && bower install
 
 Server
@@ -46,15 +52,12 @@ Server
 ```
 	authServer = 'mob.myvnc.com'
 	
-	file:
-		uploadDir:	"#{__dirname}/uploads"
 	dbUrl:		"mongodb://#{proj}rw:password@localhost/#{proj}"
 	oauth2:
 		clientID:			"#{proj}Auth"
-		clientSecret:		'password'
+		clientSecret:		'pass1234'
 ```
 
-*	create the uploadDir specified in env.coffee
 *	create mongo database
 *	npm start
 
@@ -68,7 +71,7 @@ Client
 ```
 
 *	node_modules/.bin/gulp
-*	ionic resources android
+*	ionic reservation android
 *	ionic platform add android
 *	ionic run android
 

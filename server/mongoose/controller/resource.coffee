@@ -11,7 +11,7 @@ error = (res, msg) ->
 class Resource
 
 	@list: (req, res) ->
-		model.Resource.find().populate('location').exec (err, resource) ->
+		model.Resource.find().populate('location').sort({name: 'asc'}).exec (err, resource) ->
 			if err or resource == null
 				return error res, if err then err else "resource not found"
 			res.json resource

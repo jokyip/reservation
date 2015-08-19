@@ -21,6 +21,7 @@
     "mongoose": "^4.0.1",
     "mongoose-findorcreate": "0.1.2",
     "mongoose-taggable": "~0.5.0",
+    "mongoose-schema-extend": "0.1.7",
     "morgan": "^1.5.2",
     "multer": "^0.1.8",
     "needle": "~0.7.1",

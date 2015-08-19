@@ -1,0 +1,34 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+  	<h1 class="title">Resource</h1>
+	<button class="button button-clear button-positive" ng-click="controller.edit()">Edit</button>
+  </ion-nav-buttons>
+  <ion-content padding="true">
+	<label class="item item-input">
+		<span class="input-label">Name</span>
+		{{ model.name }}
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Location</span>
+		{{ model.location.name }}
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Capacity</span>
+		{{ model.capacity }}
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Contact No.</span>
+		{{ model.contactNo }}
+	</label>
+	<label class="item item-input">
+		<span class="input-label">UC Facility</span>
+		{{ model.ucFacility }}
+	</label>
+	<label class="item item-input">
+		<span class="input-label">Admin acceptance</span>
+		{{ model.adminAccept }}
+	</label>
+		
+	</ion-item>
+  </ion-content>
+</ion-view>

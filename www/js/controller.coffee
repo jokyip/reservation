@@ -253,11 +253,14 @@ ResourceCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $i
 				
 			$scope.$on 'selectedLocation', (event, item) ->
 				$scope.model.location = item
+		
+		read: ->
+			$state.transitionTo 'app.resourceRead', { model: $scope.model }, { reload: true }
 				
 		edit: ->
 			$state.transitionTo 'app.resourceEdit', { model: $scope.model }, { reload: true }
 						
-		ok: ->
+		ok: ->			
 			$scope.model.$save().then =>
 				$state.transitionTo 'app.resource', {}, { reload: true }
 						

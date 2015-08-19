@@ -63,7 +63,16 @@ module.config ($stateProvider, $urlRouterProvider) ->
 		views:
 			'menuContent':
 				templateUrl: "templates/resource/edit.html"
-				controller: 'ResourceCtrl'					
+				controller: 'ResourceCtrl'
+				
+	$stateProvider.state 'app.resourceRead',
+		url: "/resource/read"
+		cache: false
+		params: {model: null}
+		views:
+			'menuContent':
+				templateUrl: "templates/resource/read.html"
+				controller: 'ResourceCtrl'								
 				
 	# Reservation
 	$stateProvider.state 'app.myreservation',

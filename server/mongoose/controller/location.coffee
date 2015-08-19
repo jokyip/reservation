@@ -11,7 +11,7 @@ error = (res, msg) ->
 class Location
 
 	@list: (req, res) ->
-		model.Location.find().exec (err, location) ->
+		model.Location.find().sort({name: 'asc'}).exec (err, location) ->
 			if err or location == null
 				return error res, if err then err else "location not found"
 			res.json location
