@@ -25,14 +25,24 @@
 		<span class="input-label">Contact No.</span>
 		<input type="text" ng-model="model.contactNo">
 	</label>
-	<label class="item item-input">
-		<span class="input-label">UC Facility</span>
-		<input type="text" ng-model="model.ucFacility">
-	</label>
-	<label class="item item-input">
-		<span class="input-label">Admin acceptance</span>
-		<input type="text" ng-model="model.adminAccept">
-	</label>
+	<div class="item item-input" ng-init="item2 = '-- Please select --'; option = ['Y','N']">
+	 	<span class="input-label">UC Facility</span>
+		<fancy-select
+			template-url='templates/resource/select.html'
+			ng-selected="item2"
+			ng-model="option"
+			title="UC Facility">
+		</fancy-select>
+	</div>
+	<div class="item item-input" ng-init="item3 = '-- Please select --'; option = ['Y','N']">
+	 	<span class="input-label">Admin acceptance</span>
+		<fancy-select
+			template-url='templates/resource/select.html'
+			ng-selected="item3"
+			ng-model="option"
+			title="Admin Acceptance">
+		</fancy-select>
+	</div>
 		
 	</ion-item>
   </ion-content>

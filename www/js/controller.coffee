@@ -241,18 +241,21 @@ LocationListCtrl = ($rootScope, $scope, model, $state) ->
 	$scope.controller = new LocationListView collection: $scope.collection
 
 ResourceCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $ionicNavBarDelegate) ->
-	class ResourceView		
+	class ResourceView
+		modelEvents:
+			'Select Location':	'location'
+			'UC Facility'	:	'ucFacility'
+			'Admin Acceptance' : 'adminAccept'
+	
 		constructor: (opts = {}) ->
 			@model = opts.model
-			
-			_.each @modelEvents, (handler, event) =>
-				$scope.$on event, @[handler]
+				
+			_.each @modelEvents, (modelField, event) =>
+				$scope.$on event, (event, item) =>
+					$scope.model[@modelEvents[event.name]] = item
 			
 			$scope.locationList = new model.LocationList()
-			$scope.locationList.$fetch()
-				
-			$scope.$on 'selectedLocation', (event, item) ->
-				$scope.model.location = item
+			$scope.locationList.$fetch()	
 		
 		read: ->
 			$state.transitionTo 'app.resourceRead', { model: $scope.model }, { reload: true }
@@ -274,7 +277,7 @@ ResourceCtrl = ($rootScope, $scope, $ionicModal, model, $stateParams, $state, $i
 	
 	$ionicNavBarDelegate.showBackButton true
 	
-ResourceListCtrl = ($rootScope, $scope, model, $state) ->
+ResourceListCtrl = ($rootScope, $scope, model, $state, $ionicNavBarDelegate) ->
 	class ResourceListView
 		constructor: (opts = {}) ->
 			_.each @events, (handler, event) =>
@@ -298,6 +301,7 @@ ResourceListCtrl = ($rootScope, $scope, model, $state) ->
 	$scope.collection.$fetch()
 	$scope.controller = new ResourceListView collection: $scope.collection
 	
+	$ionicNavBarDelegate.showBackButton false	
 	
 ReservationCtrl = ($rootScope, $scope, $ionicModal, $filter, model, $stateParams, $state, $ionicNavBarDelegate) ->
 	class ReservationView		
@@ -472,7 +476,7 @@ angular.module('starter.controller').controller 'MultiSelectCtrl', ['$scope', '$
 angular.module('starter.controller').controller 'LocationCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', LocationCtrl]
 angular.module('starter.controller').controller 'LocationListCtrl', ['$rootScope', '$scope', 'model', '$state', LocationListCtrl]
 angular.module('starter.controller').controller 'ResourceCtrl', ['$rootScope', '$scope', '$ionicModal', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ResourceCtrl]
-angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', '$state', ResourceListCtrl]
+angular.module('starter.controller').controller 'ResourceListCtrl', ['$rootScope', '$scope', 'model', '$state', '$ionicNavBarDelegate', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$rootScope', '$scope', '$ionicModal', '$filter', 'model', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$rootScope', '$scope', 'model', '$state', MyReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationListCtrl', ['$rootScope', '$scope', 'model', '$filter', '$stateParams', '$state', '$ionicNavBarDelegate', ReservationListCtrl]
