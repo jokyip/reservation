@@ -12,7 +12,7 @@ error = (res, msg) ->
 class Reservation
 
 	@mylist: (req, res) ->
-		model.Reservation.find({createdBy: req.user}).populate('resource createdBy').sort({name: 'asc'}).exec (err, reservation) ->
+		model.Reservation.find({createdBy: req.user}).populate('resource time createdBy').sort({name: 'asc'}).exec (err, reservation) ->
 			if err or reservation == null
 				return error res, if err then err else "reservation not found"
 			res.json reservation

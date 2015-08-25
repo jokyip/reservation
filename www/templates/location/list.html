@@ -3,22 +3,22 @@
       <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
       <h1 class='title'>Location</h1>
       <div class="buttons">
-        <button class="button icon-right ion-plus-round" on-tap="controller.create();"></button>
+        <button class="button icon-right ion-plus-round" on-tap="$event.stopPropagation(); create()"></button>
       </div>	
     </ion-nav-buttons>
 	<ion-content>
 		<ion-list>
-			<ion-item ng-controller="LocationCtrl" ng-repeat="model in controller.collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+			<ion-item ng-repeat="model in collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''" on-tap="$event.stopPropagation(); read('{{model._id}}');">				
 				<div class='row'>
 					<div class='col'>
 						{{model.name}}
 					</div>
 				</div>
-				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); controller.edit();">Edit</ion-option-button>
-				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); $parent.controller.remove(model);">Delete</ion-option-button>
+				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit('{{model._id}}')">Edit</ion-option-button>
+				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
 			</ion-item>
 		</ion-list>
-		<ion-infinite-scroll ng-if="model.state.page < model.state.total_page" on-infinite="controller.loadMore()">
+		<ion-infinite-scroll ng-if="model.state.page < model.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
 	</ion-content>
 </ion-view>

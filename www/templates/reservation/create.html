@@ -1,11 +1,11 @@
 <ion-view>
   <ion-nav-buttons side="left">
 	<h1 class="title">Select</h1>
-	<button class="button button-clear button-positive" ng-click="controller.ok()">OK</button>
+	<button class="button button-clear button-positive" ng-click="save()">OK</button>
   </ion-nav-buttons>
   <ion-content padding="true">
-	<div class="item item-input" ng-init="item = model.resource; item.label = item.name">
-	  <span class="input-label">Resource</span>
+	<div class="item item-input" ng-init="item = model.resource || resourceList.models[0]; item.label = item.name">
+	  <span class="input-label">Resource</span> 
 		<fancy-select-object
 			template-url='templates/reservation/select.html'
 			ng-selected="item"
@@ -22,7 +22,7 @@
 	<label class="item item-input">
 	  <span class="input-label">Timeslot</span>
 	  	<ion-list>
-	  	<ion-radio ng-repeat="item in timeslot" ng-value="item.value" ng-model="model.time" name="timeslot" ng-disabled="item.disabled">{{ item.value }} <b>{{ item.reservedBy }}</b></ion-radio>
+	  	<ion-radio ng-repeat="item in timeslotList.models" ng-value="item._id" ng-model="model.time._id" name="timeslot" ng-disabled="item.disabled">{{ item.name }} <b>{{ item.reservedBy }}</b></ion-radio>
 	  	</ion-list>
 	</label>    
 	<label class="item item-input">

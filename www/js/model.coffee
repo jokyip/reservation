@@ -242,6 +242,22 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 		toString: ->
 			@selected()?.group
 	
+	# Timeslot model
+	class Timeslot extends Model
+		$idAttribute: '_id'
+		
+		$urlRoot: "#{env.serverUrl()}/api/timeslots"
+		
+	class TimeslotList extends Collection
+		$idAttribute: '_id'
+	
+		$urlRoot: "#{env.serverUrl()}/api/timeslots"
+		
+		$parse: (res, opts) ->
+			_.each res, (value, key) =>
+				res[key] = new Timeslot res[key]
+			return res
+	
 	# Location model
 	class Location extends Model
 		$idAttribute: '_id'
@@ -302,6 +318,8 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 	Acl:		Acl
 	UserGrps:	UserGrps
 	FileGrps:	FileGrps
+	Timeslot:	Timeslot
+	TimeslotList:	TimeslotList
 	Location:	Location
 	LocationList:	LocationList
 	Resource:	Resource

@@ -1,9 +1,9 @@
 <ion-view>
   <ion-nav-buttons side="left">
   	<h1 class="title">Resource</h1>
-	<button class="button button-clear button-positive" ng-click="controller.ok()">OK</button>
+	<button class="button button-clear button-positive" ng-click="save()">OK</button>
   </ion-nav-buttons>
-  <ion-content padding="true">  	
+  <ion-content padding="true">
 	<label class="item item-input">
 		<span class="input-label">Name</span>
 		<input type="text" ng-model="model.name">
@@ -43,7 +43,5 @@
 			title="Admin Acceptance">
 		</fancy-select>
 	</div>
-		
-	</ion-item>
   </ion-content>
 </ion-view>

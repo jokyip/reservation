@@ -192,6 +192,22 @@ FileSchema.pre 'remove', (next) ->
 
 File = mongoose.model 'File', FileSchema
 
+
+# Timeslot Schema
+TimeslotSchema = new mongoose.Schema
+	name:			{ type: String }
+	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+	
+TimeslotSchema.statics =
+	ordering_fields: ->
+		name: 1	
+	
+TimeslotSchema.plugin(findOrCreate)
+
+# function you have to find a timeslot, or to create one if the timeslot doesn't exist
+Timeslot = mongoose.model 'Timeslot', TimeslotSchema
+
+
 # Location Schema
 LocationSchema = new mongoose.Schema
 	name:			{ type: String }
@@ -232,7 +248,7 @@ ReservationSchema = new mongoose.Schema
 	resource:		{ type: mongoose.Schema.Types.ObjectId, ref: 'Resource' }
 	purpose:		{ type: String }
 	date:			{ type: Date }
-	time:			{ type: String }
+	time:			{ type: mongoose.Schema.Types.ObjectId, ref: 'Timeslot' }
 	createdBy:		{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 	
 ReservationSchema.statics =
@@ -250,6 +266,7 @@ module.exports =
 	User: 		User
 	FileUtil:	FileUtil
 	File: 		File
+	Timeslot:	Timeslot
 	Location:	Location
 	Resource:	Resource
 	Reservation:	Reservation
