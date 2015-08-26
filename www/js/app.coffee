@@ -237,10 +237,7 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				ret.$fetch()
 			currentDate: ->
 				currDate = new Date
-				currDate.setHours(0)
-				currDate.setMinutes(0)
-				currDate.setSeconds(0)
-				currDate.setMilliseconds(0)
+				currDate.setHours(0,0,0,0)
 											
 				
 	$stateProvider.state 'app.reservationCreate',
@@ -261,10 +258,8 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				ret = $stateParams.date
 				if !ret
 					ret = new Date
-					ret.setHours(0)
-					ret.setMinutes(0)
-					ret.setSeconds(0)
-					ret.setMilliseconds(0)
+					ret.setHours(0,0,0,0)
+					return ret.getTime()
 				return ret										
 			time: ($stateParams, cliModel) ->
 				ret = new cliModel.Timeslot()

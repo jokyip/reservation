@@ -4,7 +4,7 @@
 	<button class="button button-clear button-positive" ng-click="save()">OK</button>
   </ion-nav-buttons>
   <ion-content padding="true">
-	<div class="item item-input" ng-init="item = model.resource || resourceList.models[0]; item.label = item.name">
+	<div class="item item-input" ng-init="item = model.resource; item.label = item.name">
 	  <span class="input-label">Resource</span> 
 		<fancy-select-object
 			template-url='templates/reservation/select.html'

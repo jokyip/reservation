@@ -115,15 +115,17 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 				$location.url "/resevation"
 		datePickerCallback: (val) ->
 			if val
-				$scope.model.date = new Date($filter('date')(val, 'MMM dd yyyy UTC'))				
-				$scope.currentDate = $scope.model.date
+				today = new Date(val)
+				today.setHours(0,0,0,0)				
+				$scope.currentDate = new Date($filter('date')(today, 'MMM dd yyyy UTC'))
+				$scope.model.date = $scope.currentDate
 				$scope.getAvailableTimeslot()						
 		getAvailableTimeslot: ->
 			reservationList = new cliModel.ReservationList
-			reservationList.$fetch({params: {date: $scope.model.date, resource: $scope.model.resource?._id}}).then ->
+			reservationList.$fetch({params: {date: $scope.model.date.getTime(), resource: $scope.model.resource?._id}}).then ->
 				$scope.$apply ->	
 					_.each timeslotList.models, (obj) =>
-						obj.date = $scope.model.date
+						obj.date = $scope.model.date.getTime()
 						@reservation = _.findWhere reservationList.models, {time: "#{obj._id}"}
 						if @reservation
 							obj.disabled = true
@@ -135,7 +137,10 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 	$scope.$on 'selectedResource', (event, item) ->
 		$scope.model.resource = item
 		$scope.getAvailableTimeslot()
-			    	
+	
+	if !$scope.model.resource
+		$scope.model.resource = resourceList.models[0]
+	$scope.model.date = $scope.currentDate			    	
 	$scope.getAvailableTimeslot()	
 	$ionicNavBarDelegate.showBackButton true
 	
@@ -168,16 +173,19 @@ ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, currentDate
 				$scope.shownGroup = group
 		datePickerCallback: (val) ->
 			if val
-				$scope.currentDate = new Date($filter('date')(val, 'MMM dd yyyy UTC'))
+				today = new Date(val)
+				today.setHours(0,0,0,0)				
+				$scope.currentDate = new Date($filter('date')(today, 'MMM dd yyyy UTC'))
+				$scope.currentMills = $scope.currentDate.getTime()
 				$scope.getAvailableTimeslot()
 		getAvailableTimeslot: ->
 			_.each $scope.resourceList.models, (resource) =>
 				resource.available = resource.timeslot.length
 				reservationList = new cliModel.ReservationList
-				reservationList.$fetch({params: {date: $scope.currentDate, resource: resource._id}}).then ->
+				reservationList.$fetch({params: {date: $scope.currentDate.getTime(), resource: resource._id}}).then ->
 					$scope.$apply ->
 						_.each resource.timeslot.models, (obj) =>
-							obj.date = $scope.currentDate
+							obj.date = $scope.currentDate.getTime()
 							@reservation = _.findWhere reservationList.models, {time: "#{obj._id}"}
 							if @reservation
 								obj.disabled = true
