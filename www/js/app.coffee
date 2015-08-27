@@ -232,10 +232,13 @@ module.config ($stateProvider, $urlRouterProvider) ->
 			timeslotList: (cliModel) ->
 				ret = new cliModel.TimeslotList()
 				ret.$fetch()
+			locationList: (cliModel) ->
+				ret = new cliModel.LocationList()
+				ret.$fetch()
 			resourceList: (cliModel) ->
 				ret = new cliModel.ResourceList()
 				ret.$fetch()
-			currentDate: ->
+			inputDate: ->
 				currDate = new Date
 				currDate.setHours(0,0,0,0)
 											

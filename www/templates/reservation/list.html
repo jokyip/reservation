@@ -6,15 +6,30 @@
 	</ion-nav-buttons>
 	
 	<ion-content>
-		<label class="item item-input">
-	  		<span class="input-label">Date</span>
-			<ionic-datepicker idate="currentDate" disablepreviousdates="false"  callback="datePickerCallback">
-			    <button class="button button-block button-positive"> {{ currentDate | date:'dd - MMMM - yyyy' }} </button>
+		<div class='col-100 col'>
+			<ionic-datepicker input-obj="datepickerObject">
+			  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
 			</ionic-datepicker>
-		</label>	
-	
+		<div class='row'>	
+			<div class="col-40 col" ng-init="item = selectLocationList[0]; item.label = item.name">
+				<fancy-select-object
+					template-url='templates/reservation/select.html'
+					ng-selected="item"
+					ng-model="selectLocationList"
+					title="Select Location">
+				</fancy-select-object>
+			</div>
+			<div class="col-60 col" ng-init="item2 = selectResourceList[0]; item2.label = item2.name">
+				<fancy-select-object
+					template-url='templates/reservation/select.html'
+					ng-selected="item2"
+					ng-model="selectResourceList"
+					title="Select Resource">
+				</fancy-select-object>
+			</div>
+		</div>	
 		<ion-list>
-		    <div ng-repeat="group in resourceList.models">
+		    <div ng-repeat="group in resourceList.models | filter: locationFilter | filter: resourceFilter">
 		      <ion-item class="item-stable"
 		                ng-click="toggleGroup(group)"
 		                ng-class="{active: isGroupShown(group)}">

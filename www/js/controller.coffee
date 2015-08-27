@@ -107,18 +107,21 @@ ResourceListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
 ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter, $ionicNavBarDelegate, $location) ->
 	_.extend $scope,
 		model: model
-		currentDate: new Date($filter('date')(model.date, 'MMM dd yyyy UTC'))
 		resourceList: resourceList
 		timeslotList: timeslotList
 		save: ->			
 			$scope.model.$save().then =>
 				$location.url "/resevation"
+		datepickerObject: { 
+			inputDate: new Date($filter('date')(model.date, 'MMM dd yyyy UTC')),
+			callback: (val) ->
+				$scope.datePickerCallback(val) }								
 		datePickerCallback: (val) ->
 			if val
 				today = new Date(val)
-				today.setHours(0,0,0,0)				
-				$scope.currentDate = new Date($filter('date')(today, 'MMM dd yyyy UTC'))
-				$scope.model.date = $scope.currentDate
+				today.setHours(0,0,0,0)
+				$scope.datepickerObject.inputDate = new Date($filter('date')(today, 'MMM dd yyyy UTC'))
+				$scope.model.date = $scope.datepickerObject.inputDate
 				$scope.getAvailableTimeslot()						
 		getAvailableTimeslot: ->
 			reservationList = new cliModel.ReservationList
@@ -139,8 +142,8 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 		$scope.getAvailableTimeslot()
 	
 	if !$scope.model.resource
-		$scope.model.resource = resourceList.models[0]
-	$scope.model.date = $scope.currentDate			    	
+		$scope.model.resource = resourceList.models[0] 
+	$scope.model.date = new Date($filter('date')(model.date, 'MMM dd yyyy UTC'))	 	
 	$scope.getAvailableTimeslot()	
 	$ionicNavBarDelegate.showBackButton true
 	
@@ -160,10 +163,10 @@ MyReservationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
 	$ionicNavBarDelegate.showBackButton false
 
 	
-ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, currentDate, $filter, $ionicNavBarDelegate, $location) ->
+ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotList, inputDate, $filter, $ionicNavBarDelegate, $location) ->
 	_.extend $scope,
+		locationList: locationList
 		resourceList: resourceList
-		currentDate: new Date($filter('date')(currentDate, 'MMM dd yyyy UTC'))
 		isGroupShown: (group) ->
 			return $scope.shownGroup == group
 		toggleGroup: (group) ->
@@ -171,21 +174,24 @@ ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, currentDate
 				$scope.shownGroup = null
 			else
 				$scope.shownGroup = group
+		datepickerObject: { 
+			inputDate: new Date,
+			callback: (val) ->
+				$scope.datePickerCallback(val) }						
 		datePickerCallback: (val) ->
 			if val
 				today = new Date(val)
 				today.setHours(0,0,0,0)				
-				$scope.currentDate = new Date($filter('date')(today, 'MMM dd yyyy UTC'))
-				$scope.currentMills = $scope.currentDate.getTime()
+				$scope.datepickerObject.inputDate = new Date($filter('date')(today, 'MMM dd yyyy UTC'))
 				$scope.getAvailableTimeslot()
 		getAvailableTimeslot: ->
 			_.each $scope.resourceList.models, (resource) =>
 				resource.available = resource.timeslot.length
 				reservationList = new cliModel.ReservationList
-				reservationList.$fetch({params: {date: $scope.currentDate.getTime(), resource: resource._id}}).then ->
+				reservationList.$fetch({params: {date: $scope.datepickerObject.inputDate.getTime(), resource: resource._id}}).then ->
 					$scope.$apply ->
 						_.each resource.timeslot.models, (obj) =>
-							obj.date = $scope.currentDate.getTime()
+							obj.date = $scope.datepickerObject.inputDate.getTime()
 							@reservation = _.findWhere reservationList.models, {time: "#{obj._id}"}
 							if @reservation
 								obj.disabled = true
@@ -198,11 +204,27 @@ ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, currentDate
 			$location.url "/reservation/create"
 			$location.search "resource", resource
 			$location.search "date", date
-			$location.search "time", time			
+			$location.search "time", time
+			
+	$scope.$on 'Select Location', (event, item) ->
+		$scope.locationFilter = ''
+		if item._id
+			$scope.locationFilter = item.name		
+			
+	$scope.$on 'Select Resource', (event, item) ->
+		$scope.resourceFilter = ''
+		if item._id
+			$scope.resourceFilter = item.name				
 	
+	$scope.selectLocationList = [new cliModel.Location name: '-- All Locations --']
+	_.each $scope.locationList.models, (location) =>
+		$scope.selectLocationList.push location	
+	$scope.selectResourceList = [new cliModel.Resource name: '-- All Resources --']
 	_.each $scope.resourceList.models, (resource) =>
 		resource.timeslot = angular.copy(timeslotList)
-	$scope.getAvailableTimeslot()			
+		$scope.selectResourceList.push resource
+	$scope.datepickerObject.inputDate = new Date($filter('date')(inputDate, 'MMM dd yyyy UTC'))		
+	$scope.getAvailableTimeslot()				
 	$ionicNavBarDelegate.showBackButton false
 	
 
@@ -219,4 +241,4 @@ angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'mode
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$ionicNavBarDelegate', '$location', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', MyReservationListCtrl]
-angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'currentDate', '$filter', '$ionicNavBarDelegate', '$location', ReservationListCtrl]
+angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'locationList', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$ionicNavBarDelegate', '$location', ReservationListCtrl]

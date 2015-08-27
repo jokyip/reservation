@@ -10,16 +10,16 @@
 	<ion-content>
 			<ion-item>
 				<div class='row'>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						<b>Resource</b>
 					</div>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						<b>Date</b> 
 					</div>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						<b>Time</b>
 					</div>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						<b>Purpose</b> 
 					</div>
 				</div>
@@ -29,16 +29,16 @@
 		<ion-list>
 			<ion-item ng-repeat="model in collection.models | orderBy: 'resource.name'" ng-class="model.$hasChanged() ? 'dirty' : ''">				
 				<div class='row'>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						{{model.resource.name}} 
 					</div>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						{{model.date | date: 'dd-MMM-yyyy'}} 
 					</div>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						{{model.time.name}} 
 					</div>
-					<div class='col-25'>
+					<div class='col-25 col'>
 						{{model.purpose}} 
 					</div>
 				</div>

@@ -18,7 +18,7 @@
 	          <label
 	                 ng-repeat="item in model"
 	                 ng-if="!multiple"
-	                 ng-click="item.label = item.name; select(item); $emit('selectedResource',item)"
+	                 ng-click="item.label = item.name; select(item); $emit('{{title}}',item)"
 	                 class="item item-text-wrap">
 	            {{item.name}}
 	          </label>
