@@ -208,8 +208,14 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 			
 	$scope.$on 'Select Location', (event, item) ->
 		$scope.locationFilter = ''
+		$scope.resourceFilter = ''
 		if item._id
-			$scope.locationFilter = item.name		
+			$scope.locationFilter = item.name			
+		$scope.selectResourceList = [new cliModel.Resource name: '-- All Resources --', label: '-- All Resources --']
+		locationList = $filter('filter')($scope.resourceList.models, $scope.locationFilter)
+		_.each locationList, (resource) =>
+			$scope.selectResourceList.push resource
+		angular.element($('#selectResource')).scope().item2 = $scope.selectResourceList[0]	
 			
 	$scope.$on 'Select Resource', (event, item) ->
 		$scope.resourceFilter = ''
@@ -222,7 +228,7 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 	$scope.selectResourceList = [new cliModel.Resource name: '-- All Resources --']
 	_.each $scope.resourceList.models, (resource) =>
 		resource.timeslot = angular.copy(timeslotList)
-		$scope.selectResourceList.push resource
+		$scope.selectResourceList.push resource			
 	$scope.datepickerObject.inputDate = new Date($filter('date')(inputDate, 'MMM dd yyyy UTC'))		
 	$scope.getAvailableTimeslot()				
 	$ionicNavBarDelegate.showBackButton false
