@@ -8,12 +8,12 @@
 		<span class="input-label">Name</span>
 		<input type="text" ng-model="model.name">
 	</label>
-	<div class="item item-input" ng-init="item = {label: '-- Please select location --'}">
+	<div class="item item-input" ng-init="item = selectLocationList[0]; item.label = item.name">
 	 	<span class="input-label">Location</span>
 		<fancy-select-object
 			template-url='templates/resource/select.html'
 			ng-selected="item"
-			ng-model="locationList.models"
+			ng-model="selectLocationList"
 			title="Select Location">
 		</fancy-select-object>
 	</div>

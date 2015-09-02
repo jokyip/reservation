@@ -12,20 +12,14 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-      	<ion-item nav-clear menu-close href="#/timeslot">
-          Timeslot
-        </ion-item>
-      	<ion-item nav-clear menu-close href="#/location">
-          Location
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/resource">
-          Resource
-        </ion-item>
         <ion-item nav-clear menu-close href="#/reservation">
           Reservation
         </ion-item>
         <ion-item nav-clear menu-close href="#/myreservation">
           My Reservation
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/resource">
+          Resource
         </ion-item>
         <ion-item nav-clear menu-close ng-if="env.isNative()" ng-click="navigator.app.exitApp()">
           Exit

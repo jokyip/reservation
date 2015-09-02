@@ -41,7 +41,7 @@ class Reservation
 			
 	@update: (req, res) ->
 		id = req.param('id')
-		model.Reservation.findOne {_id: id, __v: req.body.__v}, (err, reservation) ->
+		model.Reservation.findOne({_id: id, __v: req.body.__v}).populate('resource time createdBy').exec (err, reservation) ->
 			if err or reservation == null
 				return error res, if err then err else "reservation not found"
 			

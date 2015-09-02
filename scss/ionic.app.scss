@@ -105,4 +105,49 @@ div.row .col {
   -moz-flex: 0 0 60%;
   -ms-flex: 0 0 60%;
   flex: 0 0 60%;
-  max-width: 60%; }  
+  max-width: 60%; }
+  
+table, td, th {
+   border: 1px solid black;
+   text-align: left;
+   font-size: 16px;
+   vertical-align: middle;
+   padding: 5px;
+}
+
+.tableItem {
+	text-align: center;	
+}
+
+.purpose {
+	font-size: 22px;
+	padding-bottom: 15px;
+	display: block;
+	font-weight: bold;
+}
+
+.datetime {
+	color: blue;
+}
+
+.location {
+	font-size: 13px;
+	font-style: italic;
+}
+
+.th-timeslot {
+	background-color: #A9BCF5;
+}
+
+.td-resource{
+	background-color: #F5D0A9;
+}
+
+.td-reserved{
+	background-color: #BDBDBD;
+}
+
+.navDay {
+	padding-top: 10px;
+	text-align: center;	
+}	    

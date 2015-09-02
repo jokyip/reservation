@@ -65,10 +65,9 @@ LocationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
 	$ionicNavBarDelegate.showBackButton false
 	
 
-ResourceCtrl = ($scope, model, locationList, $ionicNavBarDelegate, $location) ->
+ResourceCtrl = ($scope, cliModel, model, locationList, $ionicNavBarDelegate, $location) ->
 	_.extend $scope,
 		model: model
-		locationList: locationList
 		save: ->			
 			$scope.model.$save().then =>
 				$location.url "/resource"
@@ -81,7 +80,11 @@ ResourceCtrl = ($scope, model, locationList, $ionicNavBarDelegate, $location) ->
 	_.each modelEvents, (modelField, event) =>
 		$scope.$on event, (event, item) =>
 			$scope.model[modelEvents[event.name]] = item	
-		
+	
+	$scope.selectLocationList = [new cliModel.Location name: '-- Please select location --', label: '-- Please select location --']
+	_.each locationList.models, (location) =>
+		location.label = location.name
+		$scope.selectLocationList.push location		
 	$ionicNavBarDelegate.showBackButton true
 	
 	
@@ -147,13 +150,28 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 	$scope.getAvailableTimeslot()	
 	$ionicNavBarDelegate.showBackButton true
 	
-MyReservationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
+MyReservationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location, $ionicModal) ->
 	_.extend $scope,
 		collection: collection
 		create: ->
 			$location.url "/reservation/create"
 		delete: (obj) ->
-			collection.remove obj	
+			collection.remove obj
+		edit: (obj) ->
+			$scope.model = obj
+			$ionicModal.fromTemplateUrl("templates/reservation/edit.html", scope: $scope)
+				.then (modal) ->
+					_.extend $scope,
+						modal:	modal
+						
+						close:	->
+							modal.remove()
+						
+						save: ->
+							$scope.model.$save().then =>
+								$scope.close()
+								
+					modal.show()		
 		loadMore: ->
 			collection.$fetch()
 				.then ->
@@ -167,6 +185,7 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 	_.extend $scope,
 		locationList: locationList
 		resourceList: resourceList
+		timeslotList: timeslotList
 		isGroupShown: (group) ->
 			return $scope.shownGroup == group
 		toggleGroup: (group) ->
@@ -174,6 +193,12 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 				$scope.shownGroup = null
 			else
 				$scope.shownGroup = group
+		previousDay: ->
+			$scope.datepickerObject.inputDate.setDate($scope.datepickerObject.inputDate.getDate() - 1)
+			$scope.getAvailableTimeslot()
+		nextDay: ->
+			$scope.datepickerObject.inputDate.setDate($scope.datepickerObject.inputDate.getDate() + 1)
+			$scope.getAvailableTimeslot()		
 		datepickerObject: { 
 			inputDate: new Date,
 			callback: (val) ->
@@ -195,7 +220,7 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 							@reservation = _.findWhere reservationList.models, {time: "#{obj._id}"}
 							if @reservation
 								obj.disabled = true
-								obj.reservedBy = '[ Reserved by ' + @reservation.createdBy.username + ' ]'
+								obj.reservedBy = '[ ' + @reservation.createdBy.username + ' ]'
 								--resource.available
 							else
 								obj.disabled = false
@@ -243,8 +268,8 @@ angular.module('starter.controller').controller 'TimeslotCtrl', ['$scope', 'mode
 angular.module('starter.controller').controller 'TimeslotListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', TimeslotListCtrl]
 angular.module('starter.controller').controller 'LocationCtrl', ['$scope', 'model', '$ionicNavBarDelegate', '$location', LocationCtrl]
 angular.module('starter.controller').controller 'LocationListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', LocationListCtrl]
-angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'model', 'locationList', '$ionicNavBarDelegate', '$location', ResourceCtrl]
+angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'cliModel', 'model', 'locationList', '$ionicNavBarDelegate', '$location', ResourceCtrl]
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$ionicNavBarDelegate', '$location', ReservationCtrl]
-angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', MyReservationListCtrl]
+angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', '$ionicModal', MyReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'locationList', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$ionicNavBarDelegate', '$location', ReservationListCtrl]

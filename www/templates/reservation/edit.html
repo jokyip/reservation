@@ -1,0 +1,13 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button button-clear" ng-click="close()">Close</button>    
+    <h1 class="title">Edit Reservation</h1>
+    <button class="button button-clear button-positive" ng-click="save()">OK</button>
+  </ion-header-bar>
+  <ion-content padding="true">	   
+	<label class="item item-input">
+	  <span class="input-label">Purpose</span>
+	  <input type="text" ng-model="model.purpose">
+	</label>	
+  </ion-content>
+</ion-modal-view>

@@ -8,40 +8,12 @@
         </div>	
 	</ion-nav-buttons>
 	<ion-content>
-			<ion-item>
-				<div class='row'>
-					<div class='col-25 col'>
-						<b>Resource</b>
-					</div>
-					<div class='col-25 col'>
-						<b>Date</b> 
-					</div>
-					<div class='col-25 col'>
-						<b>Time</b>
-					</div>
-					<div class='col-25 col'>
-						<b>Purpose</b> 
-					</div>
-				</div>
-				<ion-option-button</ion-option-button>
-				<ion-option-button</ion-option-button>
-			</ion-item>	
 		<ion-list>
-			<ion-item ng-repeat="model in collection.models | orderBy: 'resource.name'" ng-class="model.$hasChanged() ? 'dirty' : ''">				
-				<div class='row'>
-					<div class='col-25 col'>
-						{{model.resource.name}} 
-					</div>
-					<div class='col-25 col'>
-						{{model.date | date: 'dd-MMM-yyyy'}} 
-					</div>
-					<div class='col-25 col'>
-						{{model.time.name}} 
-					</div>
-					<div class='col-25 col'>
-						{{model.purpose}} 
-					</div>
-				</div>
+			<ion-item ng-repeat="model in collection.models | orderBy: ['date','time.name']" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+				<span class="purpose">{{model.purpose}}</span>
+				<h2 class="datetime">{{model.date | date: 'dd-MMM-yyyy'}} &nbsp&nbsp&nbsp {{model.time.name}}</h2>
+				<p class="resource">{{model.resource.name}}</p> 
+				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">Edit</ion-option-button>
 				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
 			</ion-item>
 		</ion-list>

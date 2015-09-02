@@ -8,6 +8,12 @@ API
 
 ```
 
+post api/timeslots - create timeslots
+get api/timeslots - get list of timeslots
+get api/timeslots/:id - get timeslots with specified id
+put api/timeslots/:id - update timeslots detail with the specified id
+del api/timeslots/:id - delete timeslots with the specified id
+
 post api/locations - create locations
 get api/locations - get list of locations
 get api/locations/:id - get locations with specified id

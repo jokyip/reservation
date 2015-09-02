@@ -6,45 +6,37 @@
 	</ion-nav-buttons>
 	
 	<ion-content>
-		<div class='col-100 col'>
-			<ionic-datepicker input-obj="datepickerObject">
-			  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
-			</ionic-datepicker>
-		<div class='row'>	
-			<div class="col-40 col" ng-init="item = selectLocationList[0]; item.label = item.name">
-				<fancy-select-object
-					template-url='templates/reservation/select.html'
-					ng-selected="item"
-					ng-model="selectLocationList"
-					title="Select Location">
-				</fancy-select-object>
+		<label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="search" placeholder="Search" ng-model="inputFilter">
+		</label>
+		<div class='row'>
+			<div class='col-10 navDay'>
+				<button class="button icon-left ion-chevron-left button-clear button-dark" on-tap="previousDay()"></button>
 			</div>
-			<div class="col-60 col" ng-init="item2 = selectResourceList[0]; item2.label = item2.name">
-				<fancy-select-object id='selectResource'
-					template-url='templates/reservation/select.html'
-					ng-selected="item2"
-					ng-model="selectResourceList"
-					title="Select Resource">
-				</fancy-select-object>
+			<div class='col-80 col'>	
+				<ionic-datepicker input-obj="datepickerObject">
+				  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
+				</ionic-datepicker>
 			</div>
-		</div>	
-		<ion-list>
-		    <div ng-repeat="group in resourceList.models | filter: locationFilter | filter: resourceFilter">
-		      <ion-item class="item-stable"
-		                ng-click="toggleGroup(group)"
-		                ng-class="{active: isGroupShown(group)}">
-		          <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
-		        &nbsp;
-		        {{group.name}}  [<b>{{group.available}}</b> available slot(s)]
-		      </ion-item>
-		      <ion-item class="item-accordion"
-		                ng-repeat="item in group.timeslot.models"
-		                ng-show="isGroupShown(group)"
-		                ng-disabled="item.disabled">
-		        {{item.name}} <b>{{ item.reservedBy }}</b> <button class="button button-clear button-positive" ng-click="create(group._id, item.date, item._id)" ng-if="!item.reservedBy">Reserve</button>
-		      </ion-item>
-		    </div>
-		</ion-list>
-	
+			<div class='col-10 navDay'>	
+				<button class="button icon-right ion-chevron-right button-clear button-dark" on-tap="nextDay()"></button>
+			</div>
+		</div>
+		<div>
+			<table>
+				<tr>
+					<th></th>
+					<th class="th-timeslot" ng-repeat="timeslot in timeslotList.models">{{timeslot.name}}</th>
+				</tr>
+				<tr ng-repeat="group in resourceList.models | filter: locationFilter | filter: resourceFilter | filter: inputFilter">
+					<td class="td-resource">{{group.name}} <div class="location">{{group.location.name}}</div></td>
+					<td ng-repeat="item in group.timeslot.models" class="tableItem" ng-class="{'td-reserved': item.reservedBy != ''}">
+						<span ng-if="item.reservedBy">{{ item.reservedBy }}</span>
+						<div ng-if="!item.reservedBy"><button class="button button-balanced" ng-click="create(group._id, item.date, item._id)">Reserve</button></div>
+					</td>				
+				</tr>	
+			</table>
+		</div>		
 	</ion-content>
 </ion-view>
