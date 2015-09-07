@@ -30,7 +30,7 @@
 					<th class="th-timeslot" ng-repeat="timeslot in timeslotList.models">{{timeslot.name}}</th>
 				</tr>
 				<tr ng-repeat="group in resourceList.models | filter: locationFilter | filter: resourceFilter | filter: inputFilter">
-					<td class="td-resource">{{group.name}} <div class="location">{{group.location.name}}</div></td>
+					<td class="td-resource"><b>{{group.name}}</b> <div class="location">{{group.location.name}}</div></td>
 					<td ng-repeat="item in group.timeslot.models" class="tableItem" ng-class="{'td-reserved': item.reservedBy != ''}">
 						<span ng-if="item.reservedBy">{{ item.reservedBy }}</span>
 						<div ng-if="!item.reservedBy"><button class="button button-balanced" ng-click="create(group._id, item.date, item._id)">Reserve</button></div>

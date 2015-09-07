@@ -137,6 +137,7 @@ table, td, th {
 
 .th-timeslot {
 	background-color: #A9BCF5;
+	font-weight: bold;
 }
 
 .td-resource{
@@ -150,4 +151,12 @@ table, td, th {
 .navDay {
 	padding-top: 10px;
 	text-align: center;	
-}	    
+}
+
+ion-item[isOdd='true'] > div.item-content{
+        background-color: #E6E6E6 !important;
+}
+
+ion-item[isOdd='false'] > div.item-content{
+    background-color: #F2F2F2 !important;
+}

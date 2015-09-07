@@ -7,33 +7,21 @@
       </div>	
     </ion-nav-buttons>
 	<ion-content>
-		<ion-item>
-			<div class='row'>
-				<div class='col-67 col'>
-					<b>Name</b>
-				</div>
-				<div class='col-33 col'>
-					<b>Location</b> 
-				</div>
-				<ion-option-button class="button button-positive"></ion-option-button>
-				<ion-option-button class="button button-assertive"></ion-option-button>
-			</div>
-		</ion-item>	
+		<label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="search" placeholder="Search" ng-model="resourceFilter">
+		</label>
 		<ion-list>
-			<ion-item ng-repeat="model in collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''" on-tap="$event.stopPropagation(); read('{{model._id}}');">				
-				<div class='row'>
-					<div class='col-67 col'>
-						{{model.name}}
-					</div>
-					<div class='col-33 col'>
-						{{model.location.name}}
-					</div>
+			<ion-item ng-repeat="model in collection.models | filter: resourceFilter" ng-class="model.$hasChanged() ? 'dirty' : ''" on-tap="$event.stopPropagation(); read('{{model._id}}');" isOdd="{{$odd}}">				
+				<div>
+					<b>{{model.name}}</b>
+					<div class="location">{{model.location.name}}</div>
 				</div>
 				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit('{{model._id}}')">Edit</ion-option-button>
 				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
 			</ion-item>
 		</ion-list>
-		<ion-infinite-scroll ng-if="model.state.page < model.state.total_page" on-infinite="loadMore()">
+		<ion-infinite-scroll ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
 	</ion-content>
 </ion-view>

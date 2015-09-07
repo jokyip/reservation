@@ -11,10 +11,19 @@ error = (res, msg) ->
 class Resource
 
 	@list: (req, res) ->
-		model.Resource.find().populate('location').sort({name: 'asc'}).exec (err, resource) ->
-			if err or resource == null
-				return error res, if err then err else "resource not found"
-			res.json resource
+		page = if req.query.page then req.query.page else 1
+		limit = if req.query.per_page then req.query.per_page else env.pageSize
+		opts = 
+			skip:	(page - 1) * limit
+			limit:	limit
+	
+		model.Resource.find({}, null, opts).populate('location createdBy').sort({name: 'asc'}).exec (err, resource) ->
+			if err
+				return error res, err
+			model.Resource.count {}, (err, count) ->
+				if err
+					return error res, err
+				res.json {count: count, results: resource}
 			
 	@create: (req, res) ->
 		data = req.body
@@ -27,7 +36,7 @@ class Resource
 				
 	@read: (req, res) ->
 		id = req.param('id')
-		model.Resource.findById(id).populate('location').exec (err, resource) ->
+		model.Resource.findById(id).populate('location createdBy').exec (err, resource) ->
 			if err or resource == null
 				return error res, if err then err else "resource not found"
 			res.json resource			

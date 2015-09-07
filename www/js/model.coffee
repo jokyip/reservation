@@ -248,14 +248,14 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 		
 		$urlRoot: "#{env.serverUrl()}/api/timeslots"
 		
-	class TimeslotList extends Collection
+	class TimeslotList extends PageableCollection
 		$idAttribute: '_id'
 	
 		$urlRoot: "#{env.serverUrl()}/api/timeslots"
 		
 		$parse: (res, opts) ->
-			_.each res, (value, key) =>
-				res[key] = new Timeslot res[key]
+			_.each res.results, (value, key) =>
+				res.results[key] = new Timeslot res.results[key]
 			return res
 	
 	# Location model
@@ -264,14 +264,14 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 		
 		$urlRoot: "#{env.serverUrl()}/api/locations"
 		
-	class LocationList extends Collection
+	class LocationList extends PageableCollection
 		$idAttribute: '_id'
 	
 		$urlRoot: "#{env.serverUrl()}/api/locations"
 		
 		$parse: (res, opts) ->
-			_.each res, (value, key) =>
-				res[key] = new Location res[key]
+			_.each res.results, (value, key) =>
+				res.results[key] = new Location res.results[key]
 			return res
 	
 	# Resource model
@@ -280,14 +280,14 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 		
 		$urlRoot: "#{env.serverUrl()}/api/resources"
 		
-	class ResourceList extends Collection
+	class ResourceList extends PageableCollection
 		$idAttribute: '_id'
 	
 		$urlRoot: "#{env.serverUrl()}/api/resources"
 		
 		$parse: (res, opts) ->
-			_.each res, (value, key) =>
-				res[key] = new Resource res[key]
+			_.each res.results, (value, key) =>
+				res.results[key] = new Resource res.results[key]
 			return res
 			
 	# Reservation model
@@ -296,14 +296,14 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 		
 		$urlRoot: "#{env.serverUrl()}/api/reservations"
 		
-	class ReservationList extends Collection	
+	class ReservationList extends PageableCollection	
 		$idAttribute: '_id'
 	
 		$urlRoot: "#{env.serverUrl()}/api/reservations"
 		
 		$parse: (res, opts) ->
-			_.each res, (value, key) =>
-				res[key] = new Reservation res[key]
+			_.each res.results, (value, key) =>
+				res.results[key] = new Reservation res.results[key]
 			return res
 			
 	class MyReservationList extends ReservationList

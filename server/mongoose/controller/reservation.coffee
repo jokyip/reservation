@@ -12,16 +12,35 @@ error = (res, msg) ->
 class Reservation
 
 	@mylist: (req, res) ->
-		model.Reservation.find({createdBy: req.user}).populate('resource time createdBy').sort({name: 'asc'}).exec (err, reservation) ->
-			if err or reservation == null
-				return error res, if err then err else "reservation not found"
-			res.json reservation
+		page = if req.query.page then req.query.page else 1
+		limit = if req.query.per_page then req.query.per_page else env.pageSize
+		opts = 
+			skip:	(page - 1) * limit
+			limit:	limit
+			sort: {date: 1, time: 1, purpose: 1, resource: 1}
+			
+		model.Reservation.find({createdBy: req.user}, null, opts).populate('time resource createdBy').exec (err, reservation) ->
+			if err
+				return error res, err
+			model.Reservation.count {}, (err, count) ->
+				if err
+					return error res, err
+				res.json {count: count, results: reservation}
 
 	@list: (req, res) ->
-		model.Reservation.find({date: req.query.date, resource: req.query.resource}).populate('resource createdBy').exec (err, reservation) ->
-			if err or reservation == null
-				return error res, if err then err else "reservation not found"				
-			res.json reservation
+		page = if req.query.page then req.query.page else 1
+		limit = if req.query.per_page then req.query.per_page else env.pageSize
+		opts = 
+			skip:	(page - 1) * limit
+			limit:	limit
+	
+		model.Reservation.find({date: req.query.date, resource: req.query.resource}, null, opts).populate('resource createdBy').exec (err, reservation) ->
+			if err
+				return error res, err
+			model.Reservation.count {}, (err, count) ->
+				if err
+					return error res, err
+				res.json {count: count, results: reservation}
 			
 	@create: (req, res) ->
 		data = req.body

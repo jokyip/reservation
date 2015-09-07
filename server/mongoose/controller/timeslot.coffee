@@ -11,10 +11,19 @@ error = (res, msg) ->
 class Timeslot
 
 	@list: (req, res) ->
-		model.Timeslot.find().sort({name: 'asc'}).exec (err, timeslot) ->
-			if err or timeslot == null
-				return error res, if err then err else "timeslot not found"
-			res.json timeslot
+		page = if req.query.page then req.query.page else 1
+		limit = if req.query.per_page then req.query.per_page else env.pageSize
+		opts = 
+			skip:	(page - 1) * limit
+			limit:	limit
+			
+		model.Timeslot.find({}, null, opts).sort({name: 'asc'}).exec (err, timeslot) ->
+			if err
+				return error res, err
+			model.Timeslot.count {}, (err, count) ->
+				if err
+					return error res, err
+				res.json {count: count, results: timeslot}
 			
 	@create: (req, res) ->
 		data = req.body

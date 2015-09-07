@@ -11,10 +11,19 @@ error = (res, msg) ->
 class Location
 
 	@list: (req, res) ->
-		model.Location.find().sort({name: 'asc'}).exec (err, location) ->
-			if err or location == null
-				return error res, if err then err else "location not found"
-			res.json location
+		page = if req.query.page then req.query.page else 1
+		limit = if req.query.per_page then req.query.per_page else env.pageSize
+		opts = 
+			skip:	(page - 1) * limit
+			limit:	limit
+			
+		model.Location.find({}, null, opts).sort({name: 'asc'}).exec (err, location) ->
+			if err
+				return error res, err
+			model.Location.count {}, (err, count) ->
+				if err
+					return error res, err
+				res.json {count: count, results: location}
 			
 	@create: (req, res) ->
 		data = req.body

@@ -9,7 +9,7 @@
 	</ion-nav-buttons>
 	<ion-content>
 		<ion-list>
-			<ion-item ng-repeat="model in collection.models | orderBy: ['date','time.name']" ng-class="model.$hasChanged() ? 'dirty' : ''">				
+			<ion-item ng-repeat="model in collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''" isOdd="{{$odd}}">				
 				<span class="purpose">{{model.purpose}}</span>
 				<h2 class="datetime">{{model.date | date: 'dd-MMM-yyyy'}} &nbsp&nbsp&nbsp {{model.time.name}}</h2>
 				<p class="resource">{{model.resource.name}}</p> 
@@ -17,7 +17,7 @@
 				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
 			</ion-item>
 		</ion-list>
-		<ion-infinite-scroll ng-if="model.state.page < model.state.total_page" on-infinite="loadMore()">
+		<ion-infinite-scroll ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
 	</ion-content>
 </ion-view>
