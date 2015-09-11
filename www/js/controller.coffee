@@ -71,7 +71,7 @@ ResourceCtrl = ($scope, cliModel, model, locationList, $ionicNavBarDelegate, $lo
 		save: ->			
 			$scope.model.$save().then =>
 				$location.url "/resource"
-				
+		
 	modelEvents = 
 		'Select Location':	'location'
 		'UC Facility'	:	'ucFacility'
@@ -84,7 +84,10 @@ ResourceCtrl = ($scope, cliModel, model, locationList, $ionicNavBarDelegate, $lo
 	$scope.selectLocationList = [new cliModel.Location name: '-- Please select location --', label: '-- Please select location --']
 	_.each locationList.models, (location) =>
 		location.label = location.name
-		$scope.selectLocationList.push location		
+		$scope.selectLocationList.push location
+
+	cliModel.User.me().then (user) =>
+		$scope.me = user				
 	$ionicNavBarDelegate.showBackButton true
 	
 	
@@ -117,6 +120,7 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 				$location.url "/resevation"
 		datepickerObject: { 
 			inputDate: new Date($filter('date')(model.date, 'MMM dd yyyy UTC')),
+			modalHeaderColor: 'bar-positive',
 			callback: (val) ->
 				$scope.datePickerCallback(val) }								
 		datePickerCallback: (val) ->
@@ -181,7 +185,7 @@ MyReservationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location, $i
 	$ionicNavBarDelegate.showBackButton false
 
 	
-ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotList, inputDate, $filter, $ionicNavBarDelegate, $location) ->
+ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotList, inputDate, $filter, $ionicNavBarDelegate, $location, $ionicModal) ->
 	_.extend $scope,
 		locationList: locationList
 		resourceList: resourceList
@@ -198,9 +202,10 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 			$scope.getAvailableTimeslot()
 		nextDay: ->
 			$scope.datepickerObject.inputDate.setDate($scope.datepickerObject.inputDate.getDate() + 1)
-			$scope.getAvailableTimeslot()		
+			$scope.getAvailableTimeslot()
 		datepickerObject: { 
 			inputDate: new Date,
+			modalHeaderColor: 'bar-positive',
 			callback: (val) ->
 				$scope.datePickerCallback(val) }						
 		datePickerCallback: (val) ->
@@ -230,6 +235,15 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 			$location.search "resource", resource
 			$location.search "date", date
 			$location.search "time", time
+		modalViewResource: (resource) ->
+			$scope.model = resource	
+			$ionicModal.fromTemplateUrl("templates/resource/modal.html", scope: $scope)
+				.then (modal) ->
+					_.extend $scope,
+						modal:	modal						
+						close:	->
+							modal.remove()
+					modal.show()				
 			
 	$scope.$on 'Select Location', (event, item) ->
 		$scope.locationFilter = ''
@@ -272,4 +286,4 @@ angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'cliM
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$ionicNavBarDelegate', '$location', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$ionicNavBarDelegate', '$location', '$ionicModal', MyReservationListCtrl]
-angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'locationList', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$ionicNavBarDelegate', '$location', ReservationListCtrl]
+angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'locationList', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$ionicNavBarDelegate', '$location', '$ionicModal', ReservationListCtrl]

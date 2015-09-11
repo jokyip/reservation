@@ -226,11 +226,11 @@ Location = mongoose.model 'Location', LocationSchema
 # Resource Schema
 ResourceSchema = new mongoose.Schema
 	name:			{ type: String }
-	capacity:		{ type: Number }
+	location:		{ type: String }
 	contactNo:		{ type: String }
+	capacity:		{ type: Number }	
 	ucFacility:		{ type: String }
-	adminAccept:	{ type: String }
-	location:	{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }
+	adminAccept:	{ type: String }	
 	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }	
 	
 ResourceSchema.statics =

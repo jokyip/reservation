@@ -11,8 +11,8 @@
 		<ion-list>
 			<ion-item ng-repeat="model in collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''" isOdd="{{$odd}}">				
 				<span class="purpose">{{model.purpose}}</span>
-				<h2 class="datetime">{{model.date | date: 'dd-MMM-yyyy'}} &nbsp&nbsp&nbsp {{model.time.name}}</h2>
-				<p class="resource">{{model.resource.name}}</p> 
+				<span class="datetime">{{model.date | date: 'dd-MMM-yyyy'}} &nbsp&nbsp&nbsp {{model.time.name}}</span>
+				<span class="resource">{{model.resource.name}} &nbsp <span class="location">{{model.resource.location}}</span></span> 
 				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">Edit</ion-option-button>
 				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
 			</ion-item>

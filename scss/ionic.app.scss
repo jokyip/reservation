@@ -127,7 +127,14 @@ table, td, th {
 }
 
 .datetime {
+	display: block;
+	font-size: 18px;
 	color: blue;
+}
+
+.resource {
+	font-size: 14px;
+	color: crimson;
 }
 
 .location {

@@ -8,23 +8,18 @@
 		<span class="input-label">Name</span>
 		<input type="text" ng-model="model.name">
 	</label>
-	<div class="item item-input" ng-init="item = selectLocationList[0]; item.label = item.name">
-	 	<span class="input-label">Location</span>
-		<fancy-select-object
-			template-url='templates/resource/select.html'
-			ng-selected="item"
-			ng-model="selectLocationList"
-			title="Select Location">
-		</fancy-select-object>
-	</div>
 	<label class="item item-input">
-		<span class="input-label">Capacity</span>
-		<input type="text" ng-model="model.capacity">
+		<span class="input-label">Location</span>
+		<input type="text" ng-model="model.location">
 	</label>
 	<label class="item item-input">
 		<span class="input-label">Contact No.</span>
 		<input type="text" ng-model="model.contactNo">
 	</label>
+	<label class="item item-input">
+		<span class="input-label">Capacity</span>
+		<input type="text" ng-model="model.capacity">
+	</label>	
 	<div class="item item-input" ng-init="item2 = '-- Please select --'; option = ['Y','N']">
 	 	<span class="input-label">UC Facility</span>
 		<fancy-select

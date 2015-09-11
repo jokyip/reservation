@@ -17,7 +17,7 @@ class Resource
 			skip:	(page - 1) * limit
 			limit:	limit
 	
-		model.Resource.find({}, null, opts).populate('location createdBy').sort({name: 'asc'}).exec (err, resource) ->
+		model.Resource.find({}, null, opts).populate('createdBy').sort({name: 'asc'}).exec (err, resource) ->
 			if err
 				return error res, err
 			model.Resource.count {}, (err, count) ->
@@ -36,7 +36,7 @@ class Resource
 				
 	@read: (req, res) ->
 		id = req.param('id')
-		model.Resource.findById(id).populate('location createdBy').exec (err, resource) ->
+		model.Resource.findById(id).populate('createdBy').exec (err, resource) ->
 			if err or resource == null
 				return error res, if err then err else "resource not found"
 			res.json resource			

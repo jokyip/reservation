@@ -12,7 +12,7 @@
 		</label>
 		<div class='row'>
 			<div class='col-10 navDay'>
-				<button class="button icon-left ion-chevron-left button-clear button-dark" on-tap="previousDay()"></button>
+				<button class="button icon-left ion-chevron-left button-clear button-dark" on-tap="$event.stopPropagation(); previousDay()"></button>
 			</div>
 			<div class='col-80 col'>	
 				<ionic-datepicker input-obj="datepickerObject">
@@ -20,7 +20,7 @@
 				</ionic-datepicker>
 			</div>
 			<div class='col-10 navDay'>	
-				<button class="button icon-right ion-chevron-right button-clear button-dark" on-tap="nextDay()"></button>
+				<button class="button icon-right ion-chevron-right button-clear button-dark" on-tap="$event.stopPropagation(); nextDay()"></button>
 			</div>
 		</div>
 		<div>
@@ -29,14 +29,14 @@
 					<th></th>
 					<th class="th-timeslot" ng-repeat="timeslot in timeslotList.models">{{timeslot.name}}</th>
 				</tr>
-				<tr ng-repeat="group in resourceList.models | filter: locationFilter | filter: resourceFilter | filter: inputFilter">
-					<td class="td-resource"><b>{{group.name}}</b> <div class="location">{{group.location.name}}</div></td>
+				<tr ng-repeat="group in resourceList.models | filter: inputFilter">
+					<td class="td-resource"><a href="" ng-click="modalViewResource(group)"><b>{{group.name}}</b></a> <div class="location" ng-bind="group.location"></div></td>
 					<td ng-repeat="item in group.timeslot.models" class="tableItem" ng-class="{'td-reserved': item.reservedBy != ''}">
-						<span ng-if="item.reservedBy">{{ item.reservedBy }}</span>
+						<span ng-if="item.reservedBy" ng-bind="item.reservedBy"></span>
 						<div ng-if="!item.reservedBy"><button class="button button-balanced" ng-click="create(group._id, item.date, item._id)">Reserve</button></div>
 					</td>				
 				</tr>	
-			</table>
-		</div>		
+			</table>			
+		</div>	
 	</ion-content>
 </ion-view>

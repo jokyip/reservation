@@ -15,7 +15,7 @@
 			<ion-item ng-repeat="model in collection.models | filter: resourceFilter" ng-class="model.$hasChanged() ? 'dirty' : ''" on-tap="$event.stopPropagation(); read('{{model._id}}');" isOdd="{{$odd}}">				
 				<div>
 					<b>{{model.name}}</b>
-					<div class="location">{{model.location.name}}</div>
+					<div class="location">{{model.location}}</div>
 				</div>
 				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit('{{model._id}}')">Edit</ion-option-button>
 				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
