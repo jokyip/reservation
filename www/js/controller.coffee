@@ -10,9 +10,7 @@ TimeslotCtrl = ($scope, model, $ionicNavBarDelegate, $location) ->
 		model: model
 		save: ->			
 			$scope.model.$save().then =>
-				$location.url "/timeslot"	
-		
-	$ionicNavBarDelegate.showBackButton true
+				$location.url "/timeslot"
 	
 	
 TimeslotListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
@@ -31,8 +29,6 @@ TimeslotListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
 				.then ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
 				.catch alert
-	
-	$ionicNavBarDelegate.showBackButton false
 				
 
 LocationCtrl = ($scope, model, $ionicNavBarDelegate, $location) ->
@@ -40,9 +36,7 @@ LocationCtrl = ($scope, model, $ionicNavBarDelegate, $location) ->
 		model: model
 		save: ->			
 			$scope.model.$save().then =>
-				$location.url "/location"	
-		
-	$ionicNavBarDelegate.showBackButton true
+				$location.url "/location"
 	
 	
 LocationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
@@ -61,8 +55,6 @@ LocationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
 				.then ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
 				.catch alert
-	
-	$ionicNavBarDelegate.showBackButton false
 	
 
 ResourceCtrl = ($scope, cliModel, model, locationList, $ionicNavBarDelegate, $location) ->
@@ -87,8 +79,7 @@ ResourceCtrl = ($scope, cliModel, model, locationList, $ionicNavBarDelegate, $lo
 		$scope.selectLocationList.push location
 
 	cliModel.User.me().then (user) =>
-		$scope.me = user				
-	$ionicNavBarDelegate.showBackButton true
+		$scope.me = user
 	
 	
 ResourceListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
@@ -107,8 +98,6 @@ ResourceListCtrl = ($scope, collection, $ionicNavBarDelegate, $location) ->
 				.then ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
 				.catch alert
-	
-	$ionicNavBarDelegate.showBackButton false	
 	
 ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter, $ionicNavBarDelegate, $location) ->
 	_.extend $scope,
@@ -151,8 +140,7 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 	if !$scope.model.resource
 		$scope.model.resource = resourceList.models[0] 
 	$scope.model.date = new Date($filter('date')(model.date, 'MMM dd yyyy UTC'))	 	
-	$scope.getAvailableTimeslot()	
-	$ionicNavBarDelegate.showBackButton true
+	$scope.getAvailableTimeslot()
 	
 MyReservationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location, $ionicModal) ->
 	_.extend $scope,
@@ -181,8 +169,6 @@ MyReservationListCtrl = ($scope, collection, $ionicNavBarDelegate, $location, $i
 				.then ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
 				.catch alert
-	
-	$ionicNavBarDelegate.showBackButton false
 
 	
 ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotList, inputDate, $filter, $ionicNavBarDelegate, $location, $ionicModal) ->
@@ -269,8 +255,7 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 		resource.timeslot = angular.copy(timeslotList)
 		$scope.selectResourceList.push resource			
 	$scope.datepickerObject.inputDate = new Date($filter('date')(inputDate, 'MMM dd yyyy UTC'))		
-	$scope.getAvailableTimeslot()				
-	$ionicNavBarDelegate.showBackButton false
+	$scope.getAvailableTimeslot()
 	
 
 config = ->
