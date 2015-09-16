@@ -109,7 +109,6 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 				$location.url "/resevation"
 		datepickerObject: { 
 			inputDate: new Date($filter('date')(model.date, 'MMM dd yyyy UTC')),
-			modalHeaderColor: 'bar-positive',
 			callback: (val) ->
 				$scope.datePickerCallback(val) }								
 		datePickerCallback: (val) ->
@@ -191,7 +190,6 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 			$scope.getAvailableTimeslot()
 		datepickerObject: { 
 			inputDate: new Date,
-			modalHeaderColor: 'bar-positive',
 			callback: (val) ->
 				$scope.datePickerCallback(val) }						
 		datePickerCallback: (val) ->
@@ -202,7 +200,6 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 				$scope.getAvailableTimeslot()
 		getAvailableTimeslot: ->
 			_.each $scope.resourceList.models, (resource) =>
-				resource.available = resource.timeslot.length
 				reservationList = new cliModel.ReservationList
 				reservationList.$fetch({params: {date: $scope.datepickerObject.inputDate.getTime(), resource: resource._id}}).then ->
 					$scope.$apply ->
@@ -211,8 +208,7 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 							@reservation = _.findWhere reservationList.models, {time: "#{obj._id}"}
 							if @reservation
 								obj.disabled = true
-								obj.reservedBy = '[ ' + @reservation.createdBy.username + ' ]'
-								--resource.available
+								obj.reservedBy = @reservation.createdBy
 							else
 								obj.disabled = false
 								obj.reservedBy = ''		
@@ -229,7 +225,16 @@ ReservationListCtrl = ($scope, cliModel, locationList, resourceList, timeslotLis
 						modal:	modal						
 						close:	->
 							modal.remove()
-					modal.show()				
+					modal.show()
+		modalViewUser: (user) ->
+			$scope.model = user	
+			$ionicModal.fromTemplateUrl("templates/user/modal.html", scope: $scope)
+				.then (modal) ->
+					_.extend $scope,
+						modal:	modal						
+						close:	->
+							modal.remove()
+					modal.show()							
 			
 	$scope.$on 'Select Location', (event, item) ->
 		$scope.locationFilter = ''

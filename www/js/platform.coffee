@@ -13,9 +13,7 @@ platform = ($rootScope, $cordovaInAppBrowser, $location, $http) ->
 						$cordovaInAppBrowser.open url, '_blank'
 					
 					$rootScope.$on '$cordovaInAppBrowser:loadstart', (e, event) ->
-						if (event.url).indexOf('http://localhost/callback') == 0
-							$cordovaInAppBrowser.close()
-							fulfill $.deparam event.url.split("#")[1]
+						fulfill()
 					
 					$rootScope.$on '$cordovaInAppBrowser:exit', (e, event) ->
 						reject("The sign in flow was canceled")

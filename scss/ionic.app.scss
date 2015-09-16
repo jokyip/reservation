@@ -116,7 +116,7 @@ table, td, th {
 }
 
 .tableItem {
-	text-align: center;	
+	text-align: center;
 }
 
 .purpose {
@@ -167,3 +167,16 @@ ion-item[isOdd='true'] > div.item-content{
 ion-item[isOdd='false'] > div.item-content{
     background-color: #F2F2F2 !important;
 }
+
+.ion-person, .ion-person-add {
+  font-size: 50px;
+}
+
+.button.button-white {
+    background-color: white;
+    color: #fff; }
+    .button.button-white.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: white; }
