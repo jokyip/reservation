@@ -8,8 +8,12 @@
         </div>	
 	</ion-nav-buttons>
 	<ion-content>
+		<label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="search" placeholder="Search" ng-model="inputFilter">
+		</label>
 		<ion-list>
-			<ion-item ng-repeat="model in collection.models" ng-class="model.$hasChanged() ? 'dirty' : ''" isOdd="{{$odd}}">				
+			<ion-item ng-repeat="model in collection.models | filter: inputFilter" ng-class="model.$hasChanged() ? 'dirty' : ''" isOdd="{{$odd}}">				
 				<span class="purpose">{{model.purpose}}</span>
 				<span class="datetime">{{model.date | date: 'dd-MMM-yyyy'}} &nbsp&nbsp&nbsp {{model.time.name}}</span>
 				<span class="resource">{{model.resource.name}} &nbsp <span class="location">{{model.resource.location}}</span></span> 

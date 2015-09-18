@@ -221,7 +221,7 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				ret.$fetch()		
 				
 	$stateProvider.state 'app.reservation',
-		url: "/reservation"
+		url: "/reservation?date"
 		cache: false
 		views:
 			'menuContent':
@@ -232,19 +232,39 @@ module.config ($stateProvider, $urlRouterProvider) ->
 			timeslotList: (cliModel) ->
 				ret = new cliModel.TimeslotList()
 				ret.$fetch()
-			locationList: (cliModel) ->
-				ret = new cliModel.LocationList()
+			resourceList: (cliModel) ->
+				ret = new cliModel.ResourceList()
+				ret.$fetch()
+			inputDate: ($stateParams) ->
+				ret = $stateParams.date
+				if !ret
+					ret = new Date
+					ret.setHours(0,0,0,0)
+				return ret			
+				
+	$stateProvider.state 'app.reservationByResource',
+		url: "/reservationByResource?resource"
+		cache: false
+		views:
+			'menuContent':
+				templateUrl: "templates/reservation/listByResource.html"
+				controller: 'ReservationByResourceListCtrl'
+		resolve:
+			cliModel: 'model'	
+			timeslotList: (cliModel) ->
+				ret = new cliModel.TimeslotList()
 				ret.$fetch()
 			resourceList: (cliModel) ->
 				ret = new cliModel.ResourceList()
 				ret.$fetch()
-			inputDate: ->
-				currDate = new Date
-				currDate.setHours(0,0,0,0)
+			resource: (cliModel, $stateParams) ->
+				if $stateParams.resource
+					ret = new cliModel.Resource({_id: $stateParams.resource})
+					ret.$fetch()
 											
 				
 	$stateProvider.state 'app.reservationCreate',
-		url: "/reservation/create?resource&date&time"
+		url: "/reservation/create?resource&date&time&source"
 		cache: false		
 		views:
 			'menuContent':
@@ -276,7 +296,9 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				ret = new cliModel.ResourceList()
 				ret.$fetch()	
 			model: (cliModel, resource, date, time) ->
-				new cliModel.Reservation resource: resource, date: date, time: time									
+				new cliModel.Reservation resource: resource, date: date, time: time
+			source: ($stateParams) ->
+				$stateParams.source								
 							
 		
 	$urlRouterProvider.otherwise('/reservation')

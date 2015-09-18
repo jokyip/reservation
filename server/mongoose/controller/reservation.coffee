@@ -34,7 +34,12 @@ class Reservation
 			skip:	(page - 1) * limit
 			limit:	limit
 	
-		model.Reservation.find({date: req.query.date, resource: req.query.resource}, null, opts).populate('resource createdBy').exec (err, reservation) ->
+		if req.query.startDate && req.query.endDate
+			params = {date: {"$gte": req.query.startDate, "$lt": req.query.endDate}, resource: req.query.resource}
+		else
+			params = {date: req.query.date, resource: req.query.resource}
+			 	
+		model.Reservation.find(params, null, opts).populate('resource createdBy').exec (err, reservation) ->			
 			if err
 				return error res, err
 			model.Reservation.count {}, (err, count) ->

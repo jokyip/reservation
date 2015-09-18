@@ -1,0 +1,38 @@
+<ion-view>
+	<ion-nav-buttons side="left">
+	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+        <h1 class='title'>Reservation</h1>
+	</ion-nav-buttons>
+	
+	<ion-content>
+		<div class="item item-input" ng-init="item = resource; item.label = item.name">		  
+			<fancy-select-object
+				template-url='templates/reservation/select.html'
+				ng-selected="item"
+				ng-model="resourceList.models"
+				title="Select Resource">
+			</fancy-select-object>
+		</div>
+		<ion-list>
+		<table id="reservationListByResource">
+			<thead id="resource">
+				<th colspan="6"><a href="" ng-click="modalViewResource()"><b>{{resource.name}}</b></a> <div class="location" ng-bind="resource.location"></div></th>
+			</thead>
+			<tr>
+				<th></th>
+				<th class="th-timeslot" ng-repeat="timeslot in timeslotList.models">{{timeslot.name}}</th>
+			</tr>
+			<tr ng-repeat="dateObj in dateList">
+				<td class="td-resource"><b>{{dateObj.date | date: 'dd/MM/yyyy'}}</b></td>
+				<td ng-repeat="item in dateObj.timeslot.models" class="tableItem">
+					<span ng-if="item.reservedBy"><a class="button button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
+					<div ng-if="!item.reservedBy"><a class="button button-clear button-balanced ion-person-add" ng-click="create(resource._id, dateObj.date, item._id)"></a></div>
+				</td>				
+			</tr>	
+		</table>
+		</ion-list>
+		<ion-infinite-scroll ng-if="1< 2" on-infinite="loadMore()">
+		</ion-infinite-scroll>	
+	</ion-content>
+</ion-view>

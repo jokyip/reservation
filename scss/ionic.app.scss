@@ -107,7 +107,7 @@ div.row .col {
   flex: 0 0 60%;
   max-width: 60%; }
   
-table, td, th {
+table#reservationList td, table#reservationList tr th, table#reservationListByResource td, table#reservationListByResource tr th {
    border: 1px solid black;
    text-align: left;
    font-size: 16px;
@@ -115,7 +115,7 @@ table, td, th {
    padding: 5px;
 }
 
-.tableItem {
+table#reservationList td.tableItem, table#reservationListByResource td.tableItem {
 	text-align: center;
 }
 
@@ -142,7 +142,7 @@ table, td, th {
 	font-style: italic;
 }
 
-.th-timeslot {
+table#reservationList th.th-timeslot, table#reservationListByResource th.th-timeslot {
 	background-color: #A9BCF5;
 	font-weight: bold;
 }
@@ -175,8 +175,16 @@ ion-item[isOdd='false'] > div.item-content{
 .button.button-white {
     background-color: white;
     color: #fff; }
-    .button.button-white.button-clear {
+  	.button.button-white.button-clear {
       border-color: transparent;
       background: none;
       box-shadow: none;
       color: white; }
+      
+table#reservationListByResource thead th {
+	border: none;
+	text-align: center;
+	font-size: 16px;
+	vertical-align: middle;
+	padding: 10px 5px;
+}      
