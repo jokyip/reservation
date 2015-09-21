@@ -120,7 +120,7 @@ div.row .col {
 table#reservationList td, table#reservationList tr th, table#reservationListByResource td, table#reservationListByResource tr th {
    border: 1px solid black;
    text-align: left;
-   font-size: 10px;
+   font-size: 11px;
    vertical-align: middle;
    padding: 2px;
 }
@@ -148,7 +148,7 @@ table#reservationList td.tableItem, table#reservationListByResource td.tableItem
 }
 
 .location {
-	font-size: 9px;
+	font-size: 10px;
 	font-style: italic;
 }
 
@@ -186,7 +186,7 @@ ion-item[isOdd='false'] > div.item-content{
 }
 
 .ion-person, .ion-person-add {
-  font-size: 25px;
+  font-size: 30px;
 }
 
 .button.button-white {
