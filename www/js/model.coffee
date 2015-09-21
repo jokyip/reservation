@@ -306,6 +306,11 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 				res.results[key] = new Reservation res.results[key]
 			return res
 			
+		$fetch : (opts = {}) ->
+			opts.params = opts.params || {}
+			opts.params.per_page = 500
+			super(opts)	
+			
 	class MyReservationList extends ReservationList
 		$urlRoot: "#{env.serverUrl()}/api/myreservations"				
 			

@@ -89,6 +89,15 @@ div.row .col {
   	white-space: nowrap;
 }
 
+.col-5 {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 5%;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 5%;
+  -ms-flex: 0 0 5%;
+  flex: 0 0 5%;
+  max-width: 5%; }
+
 .col-40 {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 40%;
@@ -98,21 +107,22 @@ div.row .col {
   flex: 0 0 40%;
   max-width: 40%; }
   
-.col-60 {
+.col-70 {
   -webkit-box-flex: 0;
-  -webkit-flex: 0 0 60%;
+  -webkit-flex: 0 0 70%;
   -moz-box-flex: 0;
-  -moz-flex: 0 0 60%;
-  -ms-flex: 0 0 60%;
-  flex: 0 0 60%;
-  max-width: 60%; }
+  -moz-flex: 0 0 70%;
+  -ms-flex: 0 0 70%;
+  flex: 0 0 70%;
+  max-width: 70%;
+  text-align: center; }
   
 table#reservationList td, table#reservationList tr th, table#reservationListByResource td, table#reservationListByResource tr th {
    border: 1px solid black;
    text-align: left;
-   font-size: 16px;
+   font-size: 15px;
    vertical-align: middle;
-   padding: 5px;
+   padding: 2px;
 }
 
 table#reservationList td.tableItem, table#reservationListByResource td.tableItem {
@@ -138,25 +148,32 @@ table#reservationList td.tableItem, table#reservationListByResource td.tableItem
 }
 
 .location {
-	font-size: 13px;
+	font-size: 11px;
 	font-style: italic;
 }
 
 table#reservationList th.th-timeslot, table#reservationListByResource th.th-timeslot {
 	background-color: #A9BCF5;
 	font-weight: bold;
+	text-align: center;
 }
 
 .td-resource{
 	background-color: #F5D0A9;
 }
 
+.td-resource-holiday{
+	background-color: #F5D0A9;
+	color: red;
+}
+
 .td-reserved{
 	background-color: #BDBDBD;
 }
 
-.navDay {
-	padding-top: 10px;
+.nav-day {
+	margin-top: 10px;
+	margin-bottom: 10px;
 	text-align: center;	
 }
 
@@ -169,7 +186,7 @@ ion-item[isOdd='false'] > div.item-content{
 }
 
 .ion-person, .ion-person-add {
-  font-size: 50px;
+  font-size: 35px;
 }
 
 .button.button-white {

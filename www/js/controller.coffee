@@ -277,7 +277,8 @@ ReservationByResourceListCtrl = ($scope, cliModel, resourceList, timeslotList, $
 				$scope.dateList = []
 				currDate = new Date($scope.startDate)
 				while currDate < $scope.endDate
-					$scope.dateList.push {date: (new Date(currDate)).getTime(), timeslot: angular.copy(timeslotList)}
+					d = new Date(currDate)
+					$scope.dateList.push {date: d.getTime(), isWeekEnd: $scope.isWeekEnd(d), timeslot: angular.copy(timeslotList)}
 					currDate.setDate(currDate.getDate() + 1)
 				$scope.getAvailableTimeslot()
 				$scope.dateList = previousList.concat($scope.dateList) 
@@ -303,7 +304,9 @@ ReservationByResourceListCtrl = ($scope, cliModel, resourceList, timeslotList, $
 						modal:	modal						
 						close:	->
 							modal.remove()
-					modal.show()							
+					modal.show()
+		isWeekEnd: (date) ->
+			return date.getDay() == 0 || date.getDay() == 6										
 
 	$scope.$on 'Select Resource', (event, item) ->
 		$scope.resource = item
@@ -311,7 +314,7 @@ ReservationByResourceListCtrl = ($scope, cliModel, resourceList, timeslotList, $
 	
 	if !$scope.resource
 		$scope.resource = resourceList.models[0]
-	$scope.getNewList()			
+	$scope.getNewList()
 	
 
 config = ->

@@ -1,27 +1,23 @@
-<ion-view>
+<ion-view direction="xy">
 	<ion-nav-buttons side="left">
 	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
         <h1 class='title'>Reservation</h1>
 	</ion-nav-buttons>
 	
-	<ion-content>
+	<ion-content direction="xy">
 		<label class="item item-input">
 		    <i class="icon ion-search placeholder-icon"></i>
 		    <input type="search" placeholder="Search" ng-model="inputFilter">
 		</label>
 		<div class='row'>
-			<div class='col-10 navDay'>
-				<button class="button icon-left ion-chevron-left button-clear button-dark" on-tap="$event.stopPropagation(); previousDay()"></button>
-			</div>
-			<div class='col-80 col'>	
+			<button class="button icon-left ion-chevron-left button-clear button-dark nav-day" on-tap="$event.stopPropagation(); previousDay()"></button>			
+			<div class="col-70">
 				<ionic-datepicker input-obj="datepickerObject">
 				  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
 				</ionic-datepicker>
-			</div>
-			<div class='col-10 navDay'>	
-				<button class="button icon-right ion-chevron-right button-clear button-dark" on-tap="$event.stopPropagation(); nextDay()"></button>
-			</div>
+			</div>	
+			<button class="button icon-right ion-chevron-right button-clear button-dark nav-day" on-tap="$event.stopPropagation(); nextDay()"></button>
 		</div>
 		<div>
 			<table id="reservationList">
