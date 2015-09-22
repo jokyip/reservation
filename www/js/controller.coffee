@@ -272,7 +272,7 @@ ReservationByResourceListCtrl = ($scope, cliModel, resourceList, timeslotList, $
 			return new Promise (fulfill, reject) ->
 				$scope.startDate = new Date($filter('date')($scope.endDate, 'MMM dd yyyy UTC'))
 				$scope.endDate = new Date($filter('date')($scope.startDate, 'MMM dd yyyy UTC'))
-				$scope.endDate.setDate($scope.endDate.getDate() + 12)
+				$scope.endDate.setDate($scope.endDate.getDate() + 14)
 				previousList = angular.copy($scope.dateList)					
 				$scope.dateList = []
 				currDate = new Date($scope.startDate)
