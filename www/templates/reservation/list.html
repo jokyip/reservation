@@ -1,18 +1,18 @@
-<ion-view>
+<ion-view direction="xy">
 	<ion-nav-buttons side="left">
 	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
         <h1 class='title'>Reservation</h1>
 	</ion-nav-buttons>
 	
-	<ion-content>
+	<ion-content direction="xy">
 		<label class="item item-input">
 		    <i class="icon ion-search placeholder-icon"></i>
 		    <input type="search" placeholder="Search" ng-model="inputFilter">
 		</label>
 		<div class='row'>
 			<button class="button icon-left ion-chevron-left button-clear button-dark nav-day" on-tap="$event.stopPropagation(); previousDay()"></button>			
-			<div class="col-70">
+			<div class="col-66">
 				<ionic-datepicker input-obj="datepickerObject">
 				  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
 				</ionic-datepicker>
@@ -28,8 +28,8 @@
 				<tr ng-repeat="group in resourceList.models | filter: inputFilter">
 					<td class="td-resource"><a href="" ng-click="modalViewResource(group)"><b>{{group.name}}</b></a> <div class="location" ng-bind="group.location"></div></td>
 					<td ng-repeat="item in group.timeslot.models" class="tableItem">
-						<span ng-if="item.reservedBy"><a class="button button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
-						<div ng-if="!item.reservedBy"><a class="button button-clear button-balanced ion-person-add" ng-click="create(group._id, item.date, item._id)"></a></div>
+						<span ng-if="item.reservedBy"><a class="button button-small button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
+						<div ng-if="!item.reservedBy"><a class="button button-small button-clear button-balanced ion-person-add" ng-click="create(group._id, item.date, item._id)"></a></div>
 					</td>				
 				</tr>	
 			</table>			

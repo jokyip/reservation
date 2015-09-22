@@ -132,7 +132,7 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 						@reservation = _.findWhere reservationList.models, {time: "#{obj._id}"}
 						if @reservation
 							obj.disabled = true
-							obj.reservedBy = '[ Reserved by ' + @reservation.createdBy.username + ' ]'
+							obj.reservedBy = '[ ' + @reservation.createdBy.username + ' ]'
 						else
 							obj.disabled = false
 							obj.reservedBy = ''	

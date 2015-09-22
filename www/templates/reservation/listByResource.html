@@ -27,8 +27,8 @@
 				<td class="td-resource" ng-if="!dateObj.isWeekEnd"><b>{{dateObj.date | date: 'dd/MM/yy (EEE)'}}</b></td>
 				<td class="td-resource-holiday" ng-if="dateObj.isWeekEnd"><b>{{dateObj.date | date: 'dd/MM/yy (EEE)'}}</b></td>
 				<td ng-repeat="item in dateObj.timeslot.models" class="tableItem" ng-if="!dateObj.isWeekEnd">
-					<span ng-if="item.reservedBy"><a class="button button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
-					<div ng-if="!item.reservedBy"><a class="button button-clear button-balanced ion-person-add" ng-click="create(resource._id, dateObj.date, item._id)"></a></div>
+					<span ng-if="item.reservedBy"><a class="button button-small button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
+					<div ng-if="!item.reservedBy"><a class="button button-small button-clear button-balanced ion-person-add" ng-click="create(resource._id, dateObj.date, item._id)"></a></div>
 				</td>				
 			</tr>	
 		</table>
