@@ -18,11 +18,13 @@ class Reservation
 			skip:	(page - 1) * limit
 			limit:	limit
 			sort: {date: 1, time: 1, purpose: 1, resource: 1}
-			
-		model.Reservation.find({createdBy: req.user}, null, opts).populate('time resource createdBy').exec (err, reservation) ->
+		
+		today = new Date
+		today.setHours(0,0,0,0)
+		model.Reservation.find({createdBy: req.user, date: {"$gte": today}}, null, opts).populate('time resource createdBy').exec (err, reservation) ->
 			if err
 				return error res, err
-			model.Reservation.count {}, (err, count) ->
+			model.Reservation.count {createdBy: req.user, date: {"$gte": today}}, (err, count) ->
 				if err
 					return error res, err
 				res.json {count: count, results: reservation}

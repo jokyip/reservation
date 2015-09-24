@@ -146,13 +146,21 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 	$scope.model.date = new Date($filter('date')(model.date, 'MMM dd yyyy UTC'))	 	
 	$scope.getAvailableTimeslot()
 	
-MyReservationListCtrl = ($scope, collection, $location, $ionicModal) ->
+MyReservationListCtrl = ($scope, collection, $location, $ionicModal, $ionicListDelegate, $state) ->
 	_.extend $scope,
 		collection: collection
+		isToday: (d) ->
+			today = new Date
+			today.setHours(0,0,0,0)
+			iDate = new Date(d)
+			iDate.setHours(0,0,0,0)
+			return today.getTime() == iDate.getTime() 
 		create: ->
 			$location.url "/reservation/create"
 		delete: (obj) ->
 			collection.remove obj
+			$ionicListDelegate.closeOptionButtons()
+			$state.go($state.current, {}, { reload: true })
 		edit: (obj) ->
 			$scope.model = obj
 			$ionicModal.fromTemplateUrl("templates/reservation/edit.html", scope: $scope)
@@ -162,18 +170,24 @@ MyReservationListCtrl = ($scope, collection, $location, $ionicModal) ->
 						
 						close:	->
 							modal.remove()
-						
+							$ionicListDelegate.closeOptionButtons()
 						save: ->
 							$scope.model.$save().then =>
 								$scope.close()
 								
-					modal.show()		
+					modal.show()
+		grouping: ->
+			$scope.grouped = _.groupBy(collection.models, 'date')
+			_.map $scope.grouped, (value, key) ->
+				$scope.grouped[key] = _.groupBy value, (obj) ->
+					return obj.time.name
 		loadMore: ->
 			collection.$fetch()
 				.then ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
+					$scope.grouping()
 				.catch alert
-
+	$scope.grouping()
 	
 ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, $filter, $location, $ionicModal) ->
 	_.extend $scope,
@@ -329,6 +343,6 @@ angular.module('starter.controller').controller 'LocationListCtrl', ['$scope', '
 angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'cliModel', 'model', 'locationList', '$location', ResourceCtrl]
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', 'collection', '$location', ResourceListCtrl]
 angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$location', 'source', ReservationCtrl]
-angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$location', '$ionicModal', MyReservationListCtrl]
+angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$location', '$ionicModal', '$ionicListDelegate', '$state', MyReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$location', '$ionicModal', ReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationByResourceListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', '$filter', '$location', '$ionicModal', 'resource', ReservationByResourceListCtrl]

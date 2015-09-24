@@ -129,27 +129,43 @@ table#reservationList td.tableItem, table#reservationListByResource td.tableItem
 	text-align: center;
 }
 
-.purpose {
-	font-size: 22px;
-	padding-bottom: 15px;
+.currDate {
+	font-size: 20px;
+	background: #C3DBD9;
 	display: block;
-	font-weight: bold;
+	padding: 2px 6px;
 }
 
-.datetime {
+.date {
+	font-size: 20px;
+	background: #EFDADA;
 	display: block;
+	padding: 2px 6px;
+}
+
+.time {
 	font-size: 18px;
 	color: blue;
+	display: block;
+	padding: 12px 7px 5px;
+}
+
+.purpose {
+	display: block;
 }
 
 .resource {
-	font-size: 14px;
 	color: crimson;
+	display: block;
 }
 
 .location {
 	font-size: 13px;
 	font-style: italic;
+}
+
+.tab{
+	padding-left: 25px;
 }
 
 table#reservationList th.th-timeslot, table#reservationListByResource th.th-timeslot {

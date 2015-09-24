@@ -308,11 +308,16 @@ model = (ActiveRecord, $rootScope, $upload, platform) ->
 			
 		$fetch : (opts = {}) ->
 			opts.params = opts.params || {}
-			opts.params.per_page = 500
+			opts.params.per_page = opts.params.per_page || 500
 			super(opts)	
 			
 	class MyReservationList extends ReservationList
-		$urlRoot: "#{env.serverUrl()}/api/myreservations"				
+		$urlRoot: "#{env.serverUrl()}/api/myreservations"
+		
+		$fetch : (opts = {}) ->
+			opts.params = opts.params || {}
+			opts.params.per_page = 10
+			super(opts)
 			
 		
 	Model:		Model

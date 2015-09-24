@@ -7,19 +7,19 @@
         	<button class="button button-clear icon-right ion-plus-round" on-tap="create();"></button>
         </div>	
 	</ion-nav-buttons>
-	<ion-content>
-		<label class="item item-input">
-		    <i class="icon ion-search placeholder-icon"></i>
-		    <input type="search" placeholder="Search" ng-model="inputFilter">
-		</label>
-		<ion-list>
-			<ion-item ng-repeat="model in collection.models | filter: inputFilter" ng-class="model.$hasChanged() ? 'dirty' : ''" isOdd="{{$odd}}">				
-				<span class="purpose">{{model.purpose}}</span>
-				<span class="datetime">{{model.date | date: 'dd-MMM-yyyy'}} &nbsp&nbsp&nbsp {{model.time.name}}</span>
-				<span class="resource">{{model.resource.name}} &nbsp <span class="location">{{model.resource.location}}</span></span> 
-				<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">Edit</ion-option-button>
-				<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
-			</ion-item>
+	<ion-content>		
+		<ion-list ng-repeat="(kDate, vTime) in grouped">
+			<span class="currDate" ng-if="isToday(kDate)">Today</span>
+			<span class="date" ng-if="!isToday(kDate)">{{ kDate | date: 'dd/MM/yy (EEE)'}}</span>
+			<span ng-repeat="(kTime, vResource) in vTime">							
+				<span class="time">{{kTime}}</span>
+					<ion-item ng-repeat="model in vResource | filter: inputFilter" isOdd="{{$odd}}">																							
+						<span class="resource">{{model.resource.name}} &nbsp <span class="location">{{model.resource.location}}</span></span>
+						<span class="purpose">{{model.purpose}}</span> 
+						<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">Edit</ion-option-button>
+						<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
+					</ion-item>	
+			</span>
 		</ion-list>
 		<ion-infinite-scroll ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
