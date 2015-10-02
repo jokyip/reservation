@@ -1,4 +1,5 @@
 env = require './env.coffee'
+Promise = require 'promise'
 
 MenuCtrl = ($scope) ->
 	$scope.env = env
@@ -99,19 +100,33 @@ ResourceListCtrl = ($scope, collection, $location) ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
 				.catch alert
 	
-ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter, $location, source) ->
+ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter, $location, source, $ionicPopup) ->
 	_.extend $scope,
 		model: model
 		resourceList: resourceList
 		timeslotList: timeslotList
-		save: ->			
-			$scope.model.$save().then =>
+		save: ->
+			saveRecords = ->
+				new Promise (fulfill, reject) ->
+					errorList = []
+					_.each selectedTimeslots, (timeslot) ->
+						$scope.model = _.omit($scope.model,'_id')			
+						$scope.model.time = timeslot				
+						$scope.model.$save().catch alert
+					fulfill()
+			
+			backToMainPage = ->
 				if source == 'date'
 					$location.url "/reservation"
 					$location.search "date", $scope.datepickerObject.inputDate.getTime()
 				else
 					$location.url "/reservationByResource"
 					$location.search "resource", $scope.model.resource
+			
+			selectedTimeslots = _.where(timeslotList.models, {checked: true})
+			saveRecords().then ->
+				backToMainPage()
+						
 		datepickerObject: { 
 			inputDate: new Date($filter('date')(model.date, 'MMM dd yyyy UTC')),
 			callback: (val) ->
@@ -181,6 +196,15 @@ MyReservationListCtrl = ($scope, collection, $location, $ionicModal, $ionicListD
 			_.map $scope.grouped, (value, key) ->
 				$scope.grouped[key] = _.groupBy value, (obj) ->
 					return obj.time.name
+		modalViewResource: (resource) ->
+			$scope.model = resource	
+			$ionicModal.fromTemplateUrl("templates/resource/modal.html", scope: $scope)
+				.then (modal) ->
+					_.extend $scope,
+						modal:	modal						
+						close:	->
+							modal.remove()
+					modal.show()			
 		loadMore: ->
 			collection.$fetch()
 				.then ->
@@ -189,8 +213,9 @@ MyReservationListCtrl = ($scope, collection, $location, $ionicModal, $ionicListD
 				.catch alert
 	$scope.grouping()
 	
-ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, $filter, $location, $ionicModal) ->
+ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, $filter, $location, $ionicModal, user) ->
 	_.extend $scope,
+		user: user
 		resourceList: resourceList
 		timeslotList: timeslotList
 		previousDay: ->
@@ -342,7 +367,7 @@ angular.module('starter.controller').controller 'LocationCtrl', ['$scope', 'mode
 angular.module('starter.controller').controller 'LocationListCtrl', ['$scope', 'collection', '$location', LocationListCtrl]
 angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'cliModel', 'model', 'locationList', '$location', ResourceCtrl]
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', 'collection', '$location', ResourceListCtrl]
-angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$location', 'source', ReservationCtrl]
+angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$location', 'source', '$ionicPopup', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$location', '$ionicModal', '$ionicListDelegate', '$state', MyReservationListCtrl]
-angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$location', '$ionicModal', ReservationListCtrl]
+angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$location', '$ionicModal', 'user', ReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationByResourceListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', '$filter', '$location', '$ionicModal', 'resource', ReservationByResourceListCtrl]

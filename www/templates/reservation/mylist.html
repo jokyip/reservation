@@ -14,7 +14,7 @@
 			<span ng-repeat="(kTime, vResource) in vTime">							
 				<span class="time">{{kTime}}</span>
 					<ion-item ng-repeat="model in vResource | filter: inputFilter" isOdd="{{$odd}}">																							
-						<span class="resource">{{model.resource.name}} &nbsp <span class="location">{{model.resource.location}}</span></span>
+						<span class="resource"><a href="" ng-click="modalViewResource(model.resource)"><b>{{model.resource.name}}</b></a> &nbsp <span class="location">{{model.resource.location}}</span></span>
 						<span class="purpose">{{model.purpose}}</span> 
 						<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">Edit</ion-option-button>
 						<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>

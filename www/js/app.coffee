@@ -235,6 +235,8 @@ module.config ($stateProvider, $urlRouterProvider) ->
 			resourceList: (cliModel) ->
 				ret = new cliModel.ResourceList()
 				ret.$fetch()
+			user: (cliModel) ->
+				cliModel.User.me()				
 			inputDate: ($stateParams) ->
 				ret = $stateParams.date
 				if !ret

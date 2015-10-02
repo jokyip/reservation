@@ -28,7 +28,8 @@
 				<tr ng-repeat="group in resourceList.models | filter: inputFilter">
 					<td class="td-resource"><a href="" ng-click="modalViewResource(group)"><b>{{group.name}}</b></a> <div class="location" ng-bind="group.location"></div></td>
 					<td ng-repeat="item in group.timeslot.models" class="tableItem">
-						<span ng-if="item.reservedBy"><a class="button button-small button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
+						<span ng-if="item.reservedBy && item.reservedBy.username === user.username"><i class="icon-person-color ion-person"></i></span>
+						<span ng-if="item.reservedBy && item.reservedBy.username != user.username"><a class="button button-small button-clear button-assertive ion-person" ng-click="modalViewUser(item.reservedBy)"></a></span>
 						<div ng-if="!item.reservedBy"><a class="button button-small button-clear button-balanced ion-person-add" ng-click="create(group._id, item.date, item._id)"></a></div>
 					</td>				
 				</tr>	

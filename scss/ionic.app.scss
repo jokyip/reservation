@@ -190,7 +190,7 @@ table#reservationList th.th-timeslot, table#reservationListByResource th.th-time
 .nav-day {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	text-align: center;	
+	max-width: 5%;		
 }
 
 ion-item[isOdd='true'] > div.item-content{
@@ -220,4 +220,12 @@ table#reservationListByResource thead th {
 	font-size: 16px;
 	vertical-align: middle;
 	padding: 10px 5px;
-}      
+} 
+
+.icon-person-color {
+	color: blue;
+}
+
+label[disabled='disabled'] {
+	background-color: grey;
+}

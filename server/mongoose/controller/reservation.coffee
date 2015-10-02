@@ -50,13 +50,20 @@ class Reservation
 				res.json {count: count, results: reservation}
 			
 	@create: (req, res) ->
-		data = req.body
-		data.createdBy = req.user
-		reservation = new model.Reservation data
-		reservation.save (err) =>
+		data = req.body					
+		model.Reservation.findOne({date: data.date, time: data.time, resource: data.resource}, (err, obj) ->
 			if err
 				return error res, err
-			res.json reservation			
+			if obj				
+        		return error res, "Sorry! The " + data.resource.name + " on " + obj.date.getDate() + "/" + (obj.date.getMonth() + 1) + "/" + obj.date.getFullYear() + " at " + data.time.name + " has been reserved by other."
+        	else		
+				data.createdBy = req.user
+				reservation = new model.Reservation data
+				reservation.save (err) =>
+					if err
+						return error res, err
+					res.json reservation
+		)								
 				
 	@read: (req, res) ->
 		id = req.param('id')
