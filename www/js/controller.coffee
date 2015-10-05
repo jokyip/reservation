@@ -2,8 +2,9 @@ env = require './env.coffee'
 Promise = require 'promise'
 
 MenuCtrl = ($scope) ->
-	$scope.env = env
-	$scope.navigator = navigator
+	_.extend $scope,
+		env: env
+		navigator: navigator
 
 
 TimeslotCtrl = ($scope, model, $location) ->
