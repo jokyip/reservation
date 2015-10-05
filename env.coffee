@@ -1,10 +1,10 @@
 proj = 'reservation'
 
 app =
-	url:	"http://localhost:3000/#{proj}"
+	url:	"https://mob.myvnc.com/#{proj}"
 	
 oauth2 =
-	url:	'https://mppsrc.ogcio.hksarg'
+	url:	'https://mob.myvnc.com'
 	
 env =
 	proj:		proj
@@ -16,7 +16,7 @@ env =
 		admin:	'Admin'
 	
 	db:
-		url:		"mongodb://#{proj}rw:pass1234@localhost/#{proj}"
+		url:		"mongodb://#{proj}rw:pass1234@db.myvnc.com/#{proj}"
 	
 	app:
 		url:		app.url

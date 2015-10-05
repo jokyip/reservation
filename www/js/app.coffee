@@ -1,6 +1,6 @@
 module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ionic-datepicker', 'ngFancySelect', 'ionic-press-again-to-exit'])
 
-module.run ($rootScope, platform, $ionicPlatform, $location, $http, authService, $ionicPressAgainToExit) ->
+module.run ($rootScope, platform, $ionicPlatform, $location, $http, authService, $cordovaToast, $ionicPressAgainToExit) ->
 	$ionicPlatform.ready ->
 		if (window.cordova && window.cordova.plugins.Keyboard)
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true)
@@ -8,9 +8,7 @@ module.run ($rootScope, platform, $ionicPlatform, $location, $http, authService,
 			StatusBar.styleDefault()
 			
 	$ionicPressAgainToExit ->
-			$translate 'Press again to exit'
-				.then (text) ->
-					$cordovaToast.show text, 'short', 'center'		
+		$cordovaToast.show text, 'short', 'center'
 		
 	# set authorization header once browser authentication completed
 	if $location.url().match /access_token/
