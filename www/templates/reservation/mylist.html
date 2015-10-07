@@ -7,8 +7,7 @@
         	<button class="button button-clear icon-right ion-plus-round" on-tap="create();"></button>
         </div>	
 	</ion-nav-buttons>
-	<ion-content>
-		<span class="noReservation" ng-show="!grouped.length">-- You haven't made any reservation yet --</span>		
+	<ion-content>				
 		<ion-list ng-repeat="(kDate, vTime) in grouped">
 			<span class="currDate" ng-if="isToday(kDate)">Today</span>
 			<span class="date" ng-if="!isToday(kDate)">{{ kDate | date: 'dd/MM/yy (EEE)'}}</span>
@@ -22,6 +21,7 @@
 					</ion-item>	
 			</span>
 		</ion-list>
+		<span class="noReservation" ng-show="!grouped.length">-- You haven't made any reservation yet --</span>
 		<ion-infinite-scroll ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
 	</ion-content>
