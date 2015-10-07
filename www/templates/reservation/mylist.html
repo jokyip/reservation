@@ -21,7 +21,7 @@
 					</ion-item>	
 			</span>
 		</ion-list>
-		<span class="noReservation" ng-show="!grouped.length">-- You haven't made any reservation yet --</span>
+		<span class="noReservation" ng-show="isEmpty(grouped)">-- You haven't made any reservation yet --</span>
 		<ion-infinite-scroll ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
 	</ion-content>
