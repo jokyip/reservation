@@ -229,3 +229,12 @@ table#reservationListByResource thead th {
 label[disabled='disabled'] {
 	background-color: grey;
 }
+
+span.noReservation {
+	font-size: 15px;
+	display: block;
+	padding: 10px 6px;
+	text-align: center;
+	font-style: italic;
+	color: #848484;
+}
