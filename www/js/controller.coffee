@@ -6,7 +6,6 @@ MenuCtrl = ($scope) ->
 		env: env
 		navigator: navigator
 
-
 TimeslotCtrl = ($scope, model, $location) ->
 	_.extend $scope,
 		model: model
@@ -170,7 +169,9 @@ MyReservationListCtrl = ($scope, collection, $location, $ionicModal, $ionicListD
 			today.setHours(0,0,0,0)
 			iDate = new Date(d)
 			iDate.setHours(0,0,0,0)
-			return today.getTime() == iDate.getTime() 
+			return today.getTime() == iDate.getTime()
+		isEmpty: (obj) ->
+			return angular.equals({},obj)	 
 		create: ->
 			$location.url "/reservation/create"
 		delete: (obj) ->
