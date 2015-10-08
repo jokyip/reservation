@@ -266,7 +266,8 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				if $stateParams.resource
 					ret = new cliModel.Resource({_id: $stateParams.resource})
 					ret.$fetch()
-											
+			user: (cliModel) ->
+				cliModel.User.me()	
 				
 	$stateProvider.state 'app.reservationCreate',
 		url: "/reservation/create?resource&date&time&source"

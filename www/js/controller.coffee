@@ -108,7 +108,6 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 		save: ->
 			saveRecords = ->
 				new Promise (fulfill, reject) ->
-					errorList = []
 					_.each selectedTimeslots, (timeslot) ->
 						$scope.model = _.omit($scope.model,'_id')			
 						$scope.model.time = timeslot				
@@ -281,8 +280,9 @@ ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, 
 	$scope.getAvailableTimeslot()
 
 	
-ReservationByResourceListCtrl = ($scope, cliModel, resourceList, timeslotList, $filter, $location, $ionicModal, resource) ->
+ReservationByResourceListCtrl = ($scope, cliModel, resourceList, timeslotList, $filter, $location, $ionicModal, resource, user) ->
 	_.extend $scope,
+		user: user
 		resource: resource
 		resourceList: resourceList
 		timeslotList: timeslotList
@@ -372,4 +372,4 @@ angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', '
 angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$location', 'source', '$ionicPopup', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$location', '$ionicModal', '$ionicListDelegate', '$state', MyReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$location', '$ionicModal', 'user', ReservationListCtrl]
-angular.module('starter.controller').controller 'ReservationByResourceListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', '$filter', '$location', '$ionicModal', 'resource', ReservationByResourceListCtrl]
+angular.module('starter.controller').controller 'ReservationByResourceListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', '$filter', '$location', '$ionicModal', 'resource', 'user', ReservationByResourceListCtrl]
