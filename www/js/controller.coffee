@@ -147,9 +147,12 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 						if @reservation
 							obj.disabled = true
 							obj.reservedBy = '[ ' + @reservation.createdBy.username + ' ]'
+							obj.checked = false
 						else
 							obj.disabled = false
-							obj.reservedBy = ''	
+							obj.reservedBy = ''
+							if obj._id == $scope.model.time._id
+								obj.checked = true
 	
 	$scope.$on 'Select Resource', (event, item) ->
 		$scope.model.resource = item
