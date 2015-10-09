@@ -8,7 +8,7 @@ module.run ($rootScope, platform, $ionicPlatform, $location, $http, authService,
 			StatusBar.styleDefault()
 			
 	$ionicPressAgainToExit ->
-		$cordovaToast.show text, 'short', 'center'
+		$cordovaToast.show 'Press again to exit', 'short', 'center'
 		
 	# set authorization header once browser authentication completed
 	if $location.url().match /access_token/
