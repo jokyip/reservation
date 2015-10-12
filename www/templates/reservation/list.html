@@ -11,13 +11,13 @@
 		    <input type="search" placeholder="Search" ng-model="inputFilter">
 		</label>
 		<div class='row'>
-			<button class="button icon-left ion-chevron-left button-clear button-dark nav-day" on-tap="$event.stopPropagation(); previousDay()"></button>			
-			<div class="col-66">
+			<button class="button icon-center ion-chevron-left button-clear button-dark nav-day" on-tap="$event.stopPropagation(); previousDay()"></button>			
+			<div class="col-66 datepicker">
 				<ionic-datepicker input-obj="datepickerObject">
 				  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
 				</ionic-datepicker>
 			</div>	
-			<button class="button icon-right ion-chevron-right button-clear button-dark nav-day" on-tap="$event.stopPropagation(); nextDay()"></button>
+			<button class="button icon-center ion-chevron-right button-clear button-dark nav-day" on-tap="$event.stopPropagation(); nextDay()"></button>
 		</div>
 		<div>
 			<table id="reservationList">
