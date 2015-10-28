@@ -2,26 +2,26 @@
 	<ion-nav-buttons side="left">
 	    <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
-        <h1 class='title'>My Reservation</h1>
+        <h1 class='title'>{{'My Reservation' | translate}}</h1>
         <div class="buttons">
         	<button class="button button-clear icon-right ion-plus-round" on-tap="create();"></button>
         </div>	
 	</ion-nav-buttons>
 	<ion-content>				
 		<ion-list ng-repeat="(kDate, vTime) in grouped">
-			<span class="currDate" ng-if="isToday(kDate)">Today</span>
+			<span class="currDate" ng-if="isToday(kDate)">{{'Today' | translate}}</span>
 			<span class="date" ng-if="!isToday(kDate)">{{ kDate | date: 'dd/MM/yy (EEE)'}}</span>
 			<span ng-repeat="(kTime, vResource) in vTime">							
 				<span class="time">{{kTime}}</span>
 					<ion-item ng-repeat="model in vResource | filter: inputFilter" isOdd="{{$odd}}">																							
 						<span class="resource"><a href="" ng-click="modalViewResource(model.resource)"><b>{{model.resource.name}}</b></a> &nbsp <span class="location">{{model.resource.location}}</span></span>
 						<span class="purpose">{{model.purpose}}</span> 
-						<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">Edit</ion-option-button>
-						<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">Delete</ion-option-button>
+						<ion-option-button class="button button-positive icon-left ion-edit" on-tap="$event.stopPropagation(); edit(model)">{{'Edit' | translate}}</ion-option-button>
+						<ion-option-button class="button button-assertive icon-left ion-trash-b" on-tap="$event.stopPropagation(); delete(model)">{{'Delete' | translate}}</ion-option-button>
 					</ion-item>	
 			</span>
 		</ion-list>
-		<span class="noReservation" ng-show="isEmpty(grouped)">-- You haven't made any reservation yet --</span>
+		<span class="noReservation" ng-show="isEmpty(grouped)">{{'No reservation made' | translate}}</span>
 		<ion-infinite-scroll ng-if="collection.state.page < collection.state.total_page" on-infinite="loadMore()">
 		</ion-infinite-scroll>	
 	</ion-content>

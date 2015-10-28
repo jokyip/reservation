@@ -100,7 +100,7 @@ ResourceListCtrl = ($scope, collection, $location) ->
 					$scope.$broadcast('scroll.infiniteScrollComplete')
 				.catch alert
 	
-ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter, $location, source, $ionicPopup) ->
+ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter, $location, source, $ionicPopup, datepickerTitleLabel) ->
 	_.extend $scope,
 		model: model
 		resourceList: resourceList
@@ -128,6 +128,7 @@ ReservationCtrl = ($scope, cliModel, model, resourceList, timeslotList, $filter,
 						
 		datepickerObject: { 
 			inputDate: new Date($filter('date')(model.date, 'MMM dd yyyy UTC')),
+			titleLabel: datepickerTitleLabel,
 			callback: (val) ->
 				$scope.datePickerCallback(val) }								
 		datePickerCallback: (val) ->
@@ -217,7 +218,7 @@ MyReservationListCtrl = ($scope, collection, $location, $ionicModal, $ionicListD
 				.catch alert
 	$scope.grouping()
 	
-ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, $filter, $location, $ionicModal, user) ->
+ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, $filter, $location, $ionicModal, user, datepickerTitleLabel) ->
 	_.extend $scope,
 		user: user
 		resourceList: resourceList
@@ -230,6 +231,7 @@ ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, 
 			$scope.getAvailableTimeslot()
 		datepickerObject: { 
 			inputDate: new Date,
+			titleLabel: datepickerTitleLabel,
 			callback: (val) ->
 				$scope.datePickerCallback(val) }						
 		datePickerCallback: (val) ->
@@ -275,7 +277,7 @@ ReservationListCtrl = ($scope, cliModel, resourceList, timeslotList, inputDate, 
 						modal:	modal						
 						close:	->
 							modal.remove()
-					modal.show()							
+					modal.show()													
 
 	_.each $scope.resourceList.models, (resource) =>
 		resource.timeslot = angular.copy(timeslotList)
@@ -372,7 +374,7 @@ angular.module('starter.controller').controller 'LocationCtrl', ['$scope', 'mode
 angular.module('starter.controller').controller 'LocationListCtrl', ['$scope', 'collection', '$location', LocationListCtrl]
 angular.module('starter.controller').controller 'ResourceCtrl', ['$scope', 'cliModel', 'model', 'locationList', '$location', ResourceCtrl]
 angular.module('starter.controller').controller 'ResourceListCtrl', ['$scope', 'collection', '$location', ResourceListCtrl]
-angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$location', 'source', '$ionicPopup', ReservationCtrl]
+angular.module('starter.controller').controller 'ReservationCtrl', ['$scope', 'cliModel', 'model', 'resourceList', 'timeslotList', '$filter', '$location', 'source', '$ionicPopup', 'datepickerTitleLabel', ReservationCtrl]
 angular.module('starter.controller').controller 'MyReservationListCtrl', ['$scope', 'collection', '$location', '$ionicModal', '$ionicListDelegate', '$state', MyReservationListCtrl]
-angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$location', '$ionicModal', 'user', ReservationListCtrl]
+angular.module('starter.controller').controller 'ReservationListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', 'inputDate', '$filter', '$location', '$ionicModal', 'user', 'datepickerTitleLabel', ReservationListCtrl]
 angular.module('starter.controller').controller 'ReservationByResourceListCtrl', ['$scope', 'cliModel', 'resourceList', 'timeslotList', '$filter', '$location', '$ionicModal', 'resource', 'user', ReservationByResourceListCtrl]

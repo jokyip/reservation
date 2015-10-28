@@ -1,4 +1,4 @@
-module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ionic-datepicker', 'ngFancySelect', 'ionic-press-again-to-exit'])
+module = angular.module('starter', ['ionic', 'starter.controller', 'http-auth-interceptor', 'ngTagEditor', 'ActiveRecord', 'angularFileUpload', 'ngTouch', 'ionic-datepicker', 'ngFancySelect', 'ionic-press-again-to-exit', 'pascalprecht.translate', 'locale'])
 
 module.run ($rootScope, platform, $ionicPlatform, $location, $http, authService, $cordovaToast, $ionicPressAgainToExit) ->
 	$ionicPlatform.ready ->
@@ -232,6 +232,7 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				controller: 'ReservationListCtrl'
 		resolve:
 			cliModel: 'model'
+			translate: '$translate'
 			timeslotList: (cliModel) ->
 				ret = new cliModel.TimeslotList()
 				ret.$fetch()
@@ -245,7 +246,10 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				if !ret
 					ret = new Date
 					ret.setHours(0,0,0,0)
-				return ret			
+				return ret
+			datepickerTitleLabel: (translate) ->
+				translate('Select Date').then (translation) ->
+      				return translation				
 				
 	$stateProvider.state 'app.reservationByResource',
 		url: "/reservationByResource?resource"
@@ -278,6 +282,7 @@ module.config ($stateProvider, $urlRouterProvider) ->
 				controller: 'ReservationCtrl'
 		resolve:
 			cliModel: 'model'
+			translate: '$translate'
 			resource: ($stateParams, cliModel) ->
 				ret = new cliModel.Resource()
 				if $stateParams.resource
@@ -304,7 +309,10 @@ module.config ($stateProvider, $urlRouterProvider) ->
 			model: (cliModel, resource, date, time) ->
 				new cliModel.Reservation resource: resource, date: date, time: time
 			source: ($stateParams) ->
-				$stateParams.source								
+				$stateParams.source
+			datepickerTitleLabel: (translate) ->
+				translate('Select Date').then (translation) ->
+      				return translation									
 							
 		
 	$urlRouterProvider.otherwise('/reservation')

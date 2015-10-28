@@ -1,33 +1,33 @@
 <ion-view>
   <ion-nav-buttons side="left">
   	<button class="button button-clear icon-left ion-chevron-left" ng-click="$ionicGoBack()"></button>
-	<h1 class="title">Reservation</h1>
+	<h1 class="title">{{'Reservation' | translate}}</h1>
 	<button class="button button-clear icon-right ion-checkmark-round" ng-click="save()"></button>
   </ion-nav-buttons>
   <ion-content padding="true">
 	<div class="item item-input" ng-init="item = model.resource; item.label = item.name">
-	  <span class="input-label">Resource</span> 
+	  <span class="input-label">{{'Resource' | translate}}</span> 
 		<fancy-select-object
 			template-url='templates/reservation/select.html'
 			ng-selected="item"
 			ng-model="resourceList.models"
-			title="Select Resource">
+			title="{{'Resource' | translate}}">
 		</fancy-select-object>
 	</div>
 	<label class="item item-input">
-	  <span class="input-label">Date</span>
+	  <span class="input-label">{{'Date' | translate}}</span>
 		<ionic-datepicker input-obj="datepickerObject">
 		  <button class="button button-block button-positive"> {{datepickerObject.inputDate | date:'dd - MMMM - yyyy'}}</button>
 		</ionic-datepicker>
 	</label>
 	<label class="item item-input">
-	  <span class="input-label">Timeslot</span>
+	  <span class="input-label">{{'Timeslot' | translate}}</span>
 	  	<ion-list>
 	  	<ion-checkbox ng-repeat="item in timeslotList.models" ng-value="item._id" ng-model="item.checked" name="timeslot" ng-disabled="item.disabled">{{ item.name }} <b>{{ item.reservedBy }}</b></ion-checkbox>
 	  	</ion-list>
 	</label>    
 	<label class="item item-input">
-	  <span class="input-label">Purpose</span>
+	  <span class="input-label">{{'Purpose' | translate}}</span>
 	  <input type="text" ng-model="model.purpose">
 	</label>
 	

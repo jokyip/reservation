@@ -1,28 +1,28 @@
 <ion-view>
   <ion-nav-buttons side="left">
   	<button class="button button-clear icon-left ion-chevron-left" ng-click="$ionicGoBack()"></button>
-  	<h1 class="title">Resource</h1>
+  	<h1 class="title">{{'Resource' | translate}}</h1>
 	<button class="button button-clear icon-right ion-checkmark-round" ng-click="save()"></button>
   </ion-nav-buttons>
   <ion-content padding="true">
 	<label class="item item-input">
-		<span class="input-label">Name</span>
+		<span class="input-label">{{'Name' | translate}}</span>
 		<input type="text" ng-model="model.name">
 	</label>
 	<label class="item item-input">
-		<span class="input-label">Location</span>
+		<span class="input-label">{{'Location' | translate}}</span>
 		<input type="text" ng-model="model.location">
 	</label>
 	<label class="item item-input">
-		<span class="input-label">Contact No.</span>
+		<span class="input-label">{{'Contact No' | translate}}</span>
 		<input type="text" ng-model="model.contactNo">
 	</label>
 	<label class="item item-input">
-		<span class="input-label">Capacity</span>
+		<span class="input-label">{{'Capacity' | translate}}</span>
 		<input type="text" ng-model="model.capacity">
 	</label>	
-	<div class="item item-input" ng-init="item2 = model.ucFacility || {label: 'Y', selected: 'Y'}; option = ['Y','N']">
-	 	<span class="input-label">UC Facility</span>
+	<div class="item item-input" ng-init="item2 = model.ucFacility; item2.label = 'Y'; option = ['Y','N']">
+	 	<span class="input-label">{{'UC Facility' | translate}}</span>
 		<fancy-select
 			template-url='templates/resource/select.html'
 			ng-selected="item2"
@@ -30,8 +30,8 @@
 			title="UC Facility">
 		</fancy-select>
 	</div>
-	<div class="item item-input" ng-init="item3 = model.adminAccept || {label: 'Y', selected: 'Y'}; option = ['Y','N']">
-	 	<span class="input-label">Admin acceptance</span>
+	<div class="item item-input" ng-init="item3 = model.adminAccept; item3.label = 'Y'; option = ['Y','N']">
+	 	<span class="input-label">{{'Admin acceptance' | translate}}</span>
 		<fancy-select
 			template-url='templates/resource/select.html'
 			ng-selected="item3"

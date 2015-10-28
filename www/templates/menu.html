@@ -7,24 +7,21 @@
 
   <ion-side-menu side="left" ng-controller="MenuCtrl">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Menu</h1>
+      <h1 class="title">{{'Menu' | translate}}</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
         <ion-item nav-clear menu-close href="#/reservation">
-          Reservation (By Date)
+        	{{'Reservation By Date' | translate}}
         </ion-item>
         <ion-item nav-clear menu-close href="#/reservationByResource">
-          Reservation (By Resource)
+          	{{'Reservation By Resource' | translate}}
         </ion-item>
         <ion-item nav-clear menu-close href="#/myreservation">
-          My Reservation
+        	{{'My Reservation' | translate}}
         </ion-item>
         <ion-item nav-clear menu-close href="#/resource">
-          Resource
-        </ion-item>
-        <ion-item nav-clear menu-close ng-if="env.isNative()" ng-click="navigator.app.exitApp()">
-          Exit
+        	{{'Resource' | translate}}
         </ion-item>
       </ion-list>
     </ion-content>

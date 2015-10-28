@@ -58,7 +58,8 @@
     "org.apache.cordova.device",
     "org.apache.cordova.inappbrowser",
     "com.bridge.open",
-    "org.apache.cordova.file-transfer"
+    "org.apache.cordova.file-transfer",
+    "https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git"
   ],
   "cordovaPlatforms": [
     "ios",
