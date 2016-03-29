@@ -12,6 +12,9 @@ dir = '/etc/ssl/certs'
 files = fs.readdirSync(dir).filter (file) -> /.*\.pem/i.test(file)
 files = files.map (file) -> "#{dir}/#{file}"
 ca = files.map (file) -> fs.readFileSync file
+opts = 
+	timeout:	env.promise.timeout
+	ca:			ca
 
 passport.serializeUser (user, done) ->
 	done(null, { id: user.id, token: user.token })
@@ -22,9 +25,7 @@ passport.deserializeUser (obj, done) ->
 		done(err, user)
 
 verifyToken = (token, scope) ->
-	opts = 
-		timeout:	env.promise.timeout
-		ca:			ca
+	opts = _.extend opts, env.http.opts,
 		headers:
 			Authorization:	"Bearer #{token}"
 	

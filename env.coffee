@@ -1,15 +1,20 @@
 proj = 'reservation'
+agent = require 'https-proxy-agent'
 
 app =
-	url:	"http://localhost:3000/#{proj}"
+	url:	"http://localhost:3000"
 	
 oauth2 =
-	url:	'https://mppsrc.ogcio.hksarg'
+	url:	'https://mob.myvnc.com'
 	
 env =
 	proj:		proj
 	pageSize:	10
 	log4js: 	require 'log4js'
+	
+	http:
+		opts:
+			agent:	new agent("http://proxy1.scig.gov.hk:8080")
 	
 	role:
 		all:	'All Users'

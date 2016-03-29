@@ -24,11 +24,7 @@ i18n.configure
 port = process.env.PORT || 3000
 
 require('zappajs') {port: port, express: express}, ->
-	# strip url with prefix = env.app.path 
-	@use (req, res, next) ->
-		p = new RegExp('^' + env.app.path)
-		req.url = req.url.replace(p, '')
-		next()
+	# strip url with prefix = env.app.path
 	@use logging('combined')
 	@use session
 		resave:				true
