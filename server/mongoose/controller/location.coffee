@@ -13,6 +13,11 @@ class Location
 	@list: (req, res) ->
 		page = if req.query.page then req.query.page else 1
 		limit = if req.query.per_page then req.query.per_page else env.pageSize
+		
+		# For Mongo DB 3.2
+		page = parseInt(page)
+		limit = parseInt(limit)
+		
 		opts = 
 			skip:	(page - 1) * limit
 			limit:	limit

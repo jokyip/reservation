@@ -42,9 +42,7 @@ env =
 		clientID:			"#{proj}DEVAuth"
 		clientSecret:		'pass1234'
 		scope:				[
-			"#{oauth2.url}/org/users",
-			"#{oauth2.url}/file",
-			"#{oauth2.url}/xmpp"
+			"#{oauth2.url}/org/users"
 		]
 	
 	xmpp:
