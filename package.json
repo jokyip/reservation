@@ -52,6 +52,7 @@
     "gulp-util": "^3.0.6",
     "shelljs": "^0.3.0",
     "vinyl-source-stream": "^1.0.0"
+    "yargs": "^3.19.0"
   },
   "cordovaPlugins": [
     "com.ionic.keyboard",
