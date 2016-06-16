@@ -24,6 +24,11 @@ gulp.task 'sass', (done) ->
     .pipe(rename({ extname: '.min.css' }))
     .pipe(gulp.dest('./www/css/'))
     
+gulp.task 'copy', ->
+  gulp.src(if argv.prod then './www/js/config/production.coffee' else './www/js/config/development.coffee')
+    .pipe(rename('env.coffee'))
+    .pipe(gulp.dest('./www/js/'))    
+    
 gulp.task 'coffee', ->
   browserify(entries: ['./www/js/index.coffee'])
     .transform('coffeeify')

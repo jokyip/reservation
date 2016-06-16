@@ -2,7 +2,7 @@ FROM node:4-slim
 
 WORKDIR /usr/src/app
 
-ADD https://github.com/jokyip/healthCheck/archive/master.tar.gz /tmp
+ADD https://github.com/jokyip/reservation/archive/master.tar.gz /tmp
 
 RUN apt-get update && \
 	apt-get -y install git && \
@@ -12,8 +12,8 @@ RUN apt-get update && \
 	rm /tmp/master.tar.gz && \
 	npm install bower coffee-script -g && \
 	npm install && \
-	bower install --allow-root && \
-	node_modules/.bin/gulp && \
-	ln -s /usr/local/bin/coffee /usr/bin/coffee
+	bower install --allow-root
 
-ENTRYPOINT npm start --prod
+EXPOSE 1337
+        
+ENTRYPOINT ./entrypoint.sh
