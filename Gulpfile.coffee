@@ -1,3 +1,4 @@
+argv = require('yargs').argv
 gulp = require 'gulp'
 gutil = require 'gulp-util'
 bower = require 'bower'
