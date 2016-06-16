@@ -10,7 +10,7 @@ RUN apt-get update && \
 	cd /usr/src/app && \
 	tar --strip-components=1 -xzf /tmp/master.tar.gz && \
 	rm /tmp/master.tar.gz && \
-	npm update && \
+	npm cache clean && \
 	npm install bower coffee-script -g && \
 	npm install && \
 	bower install --allow-root
