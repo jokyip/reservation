@@ -21,22 +21,22 @@
 		<span class="input-label">{{'Capacity' | translate}}</span>
 		<input type="text" ng-model="model.capacity">
 	</label>	
-	<div class="item item-input" ng-init="item2 = model.ucFacility; item2.label = 'Y'; option = ['Y','N']">
+	<div class="item item-input" ng-init="item2 = model.ucFacility; option = ['Y','N']">
 	 	<span class="input-label">{{'UC Facility' | translate}}</span>
 		<fancy-select
 			template-url='templates/resource/select.html'
 			ng-selected="item2"
 			ng-model="option"
-			title="UC Facility">
+			title="{{'UC Facility' | translate}}">
 		</fancy-select>
 	</div>
-	<div class="item item-input" ng-init="item3 = model.adminAccept; item3.label = 'Y'; option = ['Y','N']">
+	<div class="item item-input" ng-init="item3 = model.adminAccept; option = ['Y','N']">
 	 	<span class="input-label">{{'Admin acceptance' | translate}}</span>
 		<fancy-select
 			template-url='templates/resource/select.html'
 			ng-selected="item3"
 			ng-model="option"
-			title="Admin Acceptance">
+			title="{{'Admin Acceptance' | translate}}">
 		</fancy-select>
 	</div>
   </ion-content>

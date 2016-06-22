@@ -178,6 +178,12 @@ table#reservationList th.th-timeslot, table#reservationListByResource th.th-time
 	text-align: center;
 }
 
+table#reservationList th.th-col, table#reservationListByResource th.th-col {
+	background-color: #58abc3;
+	font-weight: bold;
+	text-align: left;
+}
+
 .td-resource{
 	background-color: #F5D0A9;
 }

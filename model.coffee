@@ -228,9 +228,9 @@ ResourceSchema = new mongoose.Schema
 	name:			{ type: String }
 	location:		{ type: String }
 	contactNo:		{ type: String }
-	capacity:		{ type: Number }	
-	ucFacility:		{ type: String }
-	adminAccept:	{ type: String }	
+	capacity:		{ type: Number, default: 0 }	
+	ucFacility:		{ type: String, default: 'Y' }
+	adminAccept:	{ type: String, default: 'Y' }	
 	createdBy:	{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }	
 	
 ResourceSchema.statics =
